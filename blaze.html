@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <!-- Basic -->
+    <title>Blaze | Meteor 指南 中译本</title>
+    <meta name="description" content="How to use Blaze, Meteor's frontend rendering system, to build usable and maintainable user interfaces.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="../images/favicon.png" sizes="16x16 32x32 64x64">
+
+    <!-- Social -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="http://guide-zh.ourmeteor.com">
+    <meta property="og:title" content="Blaze | Meteor 指南 中译本">
+    <meta property="og:description" content="How to use Blaze, Meteor's frontend rendering system, to build usable and maintainable user interfaces.">
+    <meta property="og:image" content="">
+    <meta name="twitter:card" content="summary_image_large">
+    <meta name="twitter:site" content="@meteor">
+    <meta name="twitter:title" content="Blaze | Meteor 指南 中译本">
+    <meta name="twitter:description" content="How to use Blaze, Meteor's frontend rendering system, to build usable and maintainable user interfaces.">
+    <meta name="twitter:image" content="">
+
+    <!-- Misc -->
+    <meta name="google-site-verification" content="" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/style/style.css">
+  </head>
+  <body class="">
+    
+
+<div class="sidebar">
+  <div class="panel">
+    <div class="panel-item logo">
+      <a href="http://www.meteor.com/developers" title="Meteor Developers" target=_new >
+        <img src="../images/icon-white.svg" alt="Meteor Developers">
+        <span>Meteor Developers</span>
+      </a>
+    </div>
+    
+      <div class="panel-item "">
+        <a class="" href="http://www.meteor.com/tutorials" target=_new >
+          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><g fill="#112B49"><circle cx="80.001" cy="80" r="3"/><path d="M75.73 85.723c.193-.183.316-.437.316-.723 0-.553-.447-1-1-1-.278 0-.528.114-.71.297l-.004-.004-50.9 50.875c-.18.18-.29.43-.29.707-.002.553.445 1 .998 1 .276 0 .526-.112.708-.293l50.883-50.86zM84.235 74.4c-.18.183-.292.433-.292.71 0 .552.446 1 1 1 .275 0 .525-.113.707-.294l50.87-50.89c.204-.184.34-.442.34-.74 0-.552-.448-1-1-1-.276 0-.526.113-.707.294l-.01-.01L84.236 74.4zM136.583 135.184L85.65 84.23c-.182-.18-.432-.293-.708-.293-.552 0-1 .447-1 1 0 .278.114.528.297.71l50.927 50.95c.18.18.43.293.708.293.553 0 1-.447 1-1 0-.276-.11-.525-.292-.706zM111.19 152.602l-.003-.005-.002-.004-27.552-66.507h-.002c-.15-.362-.505-.617-.922-.617-.552 0-1 .446-1 1 0 .135.028.263.077.38v.002l.005.012 27.552 66.504c.15.362.507.617.924.617.553 0 1-.447 1-1 0-.136-.03-.265-.077-.383zM48.873 7.384L76.435 73.93h.002c.15.362.505.617.922.617.552 0 1-.447 1-1 0-.136-.03-.264-.078-.382h.003L50.72 6.616c-.15-.362-.506-.617-.923-.617-.552 0-1 .447-1 1 0 .136.03.265.078.383h-.002zM152.55 48.844h-.002L86.092 76.422c-.36.15-.617.507-.617.924 0 .553.446 1 1 1 .135 0 .265-.028.383-.077L153.32 50.69c.363-.15.618-.507.618-.924 0-.553-.447-1-1-1-.136 0-.265.028-.383.077h-.005zM7.41 111.136h.002l66.492-27.54c.36-.15.616-.507.616-.924 0-.553-.447-1-1-1-.136 0-.264.028-.382.077v-.002l-.004.002c-.002 0-.004 0-.006.002L6.638 109.29c-.36.15-.615.507-.615.924 0 .553.446 1 1 1 .135 0 .264-.028.382-.077h.004zM159 79H87c-.552 0-1 .448-1 1 0 .554.447 1 1 1h72c.553 0 1-.447 1-1s-.447-1-1-1zM23.435 24.85l50.897 50.897.008-.008c.182.18.43.29.707.29.553 0 1-.446 1-1 0-.296-.135-.555-.34-.737L24.85 23.433c-.183-.18-.433-.292-.71-.292-.55 0-.998.448-.998 1 0 .277.11.528.293.71zM6.618 50.657v.002l66.51 27.54c.003 0 .005 0 .007.002l.004.002c.117.048.245.076.38.076.554 0 1-.447 1-1 0-.417-.254-.772-.616-.923v-.002L7.392 48.813H7.39l-.005-.003c-.118-.047-.247-.076-.383-.076-.552 0-1 .447-1 1 0 .417.256.773.618.923zM153.383 109.28l-66.52-27.53-.006-.002c-.118-.048-.248-.076-.384-.076-.552 0-1 .447-1 1 0 .417.256.773.62.923l66.513 27.528c.003 0 .005 0 .007.002l.004.002c.118.048.246.076.382.076.552 0 1-.447 1-1 0-.417-.256-.772-.617-.923zM80 74c.553 0 1-.447 1-1V1c0-.553-.447-1-1-1-.552 0-1 .447-1 1v72c0 .553.447 1 1 1zM80 86c-.552 0-1 .447-1 1v72c0 .553.447 1 1 1s1-.447 1-1V87c0-.553-.447-1-1-1zM77.36 85.47c-.417 0-.772.254-.923.616l-27.564 66.53.002.002c-.05.117-.077.246-.077.382 0 .553.446 1 1 1 .416 0 .772-.255.922-.618h.002L78.28 86.86v-.004l.003-.005c.048-.117.076-.246.076-.382 0-.552-.448-1-1-1zM82.708 74.547c.417 0 .772-.255.923-.618h.003l27.56-66.547h-.004c.048-.12.076-.247.076-.383 0-.553-.447-1-1-1-.416 0-.772.255-.922.618h-.002l-27.56 66.546h.004c-.05.12-.077.247-.077.383-.002.553.445 1 .998 1zM74 80c0-.552-.446-1-1-1H1c-.552 0-1 .447-1 1 0 .553.447 1 1 1h72c.554 0 1-.446 1-1z"/></g></svg>
+          <span>教程</span>
+        </a>
+      </div>
+    
+      <div class="panel-item active"">
+        <a class="" href="http://guide.meteor.com"  >
+          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><path fill="#BDA671" d="M80 1.988c43.01 0 78 34.99 78 78s-34.99 78-78 78-78-34.99-78-78 34.99-78 78-78m0-2c-44.183 0-80 35.817-80 80s35.817 80 80 80 80-35.817 80-80-35.817-80-80-80z"/><path fill="#BDA671" d="M126.454 33.545l-37.93 54.98-54.98 37.93 37.93-54.98 54.98-37.93m0-2c-.395 0-.79.116-1.135.354L70.336 69.826c-.2.138-.373.312-.51.51l-37.93 54.98c-.548.796-.45 1.868.232 2.55.386.388.898.587 1.414.587.395 0 .79-.116 1.135-.354l54.98-37.93c.2-.137.373-.31.51-.51l37.93-54.98c.548-.795.45-1.867-.232-2.55-.387-.386-.9-.585-1.414-.585z"/><circle fill="#BDA671" cx="79.999" cy="79.999" r="2.999"/><path fill="#BDA671" d="M135.477 50.182c-.02-.036-.04-.05-.06-.045-.173-.303-.485-.516-.858-.516-.553 0-1 .448-1 1 0 .21.078.394.188.554l-.02.007C138.358 59.766 141 69.57 141 79.99c0 33.636-27.364 61-61 61-10.42 0-20.232-2.634-28.82-7.26l-.005.02c-.144-.08-.3-.14-.478-.14-.552 0-1 .448-1 1 0 .336.176.618.43.8-.016.012-.034.025-.03.027 8.896 4.81 19.078 7.552 29.904 7.552 34.795 0 63-28.206 63-63 0-10.79-2.735-20.93-7.523-29.805zM109.65 24.47c-.002-.02.004-.04-.025-.056-8.83-4.727-18.908-7.426-29.625-7.426-34.794 0-63 28.206-63 63 0 10.79 2.73 20.935 7.514 29.81.005.01.012.004.018.01.17.312.488.532.87.532.552 0 1-.447 1-1 0-.197-.073-.37-.17-.525l.04-.002C21.642 100.223 19 90.41 19 79.988c0-33.636 27.364-61 61-61 10.4 0 20.185 2.634 28.757 7.248.02.01.036.02.055.028.116.047.24.075.37.075.554 0 1-.448 1-1 .002-.382-.22-.7-.533-.87z"/></svg>
+          <span>指南</span>
+        </a>
+      </div>
+    
+      <div class="panel-item "">
+        <a class="" href="http://docs.meteor.com"  >
+          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><path fill="#DE4F4F" d="M35.6 30.167v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .553-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .553-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .55-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .55-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .55-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .55-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .55-.447 1-1 1H35.6v5.375H80c.552 0 1 .447 1 1v10.873c1.162.413 2 1.51 2 2.816 0 1.657-1.343 3-3 3s-3-1.343-3-3c0-1.305.837-2.402 2-2.815v-9.873H34.6c-.552 0-1-.45-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.45-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.45-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.45-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.45-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.447-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.447-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.447-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.447-1-1s.448-1 1-1h90.8c.553 0 1 .447 1 1v7.375c0 .553-.447 1-1 1H35.6zM138 6.564H22c-1.104 0-2 .896-2 2v144c0 1.104.896 2 2 2h48.995c.258 0 .516-.097.712-.293.39-.39.39-1.022 0-1.413-.195-.195-.45-.293-.707-.293H22v-144h116v144H89.006c-.258 0-.517.097-.713.293-.39.39-.39 1.023 0 1.414.196.198.455.294.713.293H138c1.104 0 2-.895 2-2v-144c0-1.103-.896-2-2-2z"/></svg>
+          <span>API 文档</span>
+        </a>
+      </div>
+    
+      <div class="panel-item "">
+        <a class="" href="https://forums.meteor.com/" target=_new >
+          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><path fill="#333" d="M60.025 17.72c7.396 0 14.914 1.424 22.172 4.43 29.594 12.258 43.648 46.188 31.39 75.782-9.25 22.334-30.843 35.812-53.6 35.812-4.694 0-9.437-.574-14.132-1.76L32.44 142.277 30.23 125.51C5.908 111.003-4.74 80.48 6.418 53.538 15.67 31.204 37.266 17.72 60.025 17.72m0-2c-24.363 0-46.13 14.545-55.455 37.053-5.547 13.394-6.06 28.33-1.447 42.052 4.465 13.276 13.414 24.57 25.252 31.896l2.082 15.82c.092.708.557 1.31 1.217 1.585.246.104.506.152.766.152.434 0 .86-.142 1.217-.412l12.656-9.713c4.482 1.055 9.076 1.59 13.674 1.59 24.36 0 46.126-14.543 55.447-37.047 6.135-14.807 6.135-31.115.002-45.922C109.3 37.966 97.77 26.433 82.963 20.3c-7.34-3.04-15.06-4.58-22.938-4.58zM92.69 133.9c.165-.443.614-.683 1.064-.623l.004-.024c5.18.558 10.343.396 15.365-.414v2.034c-5.13.796-10.4.942-15.69.356l.002-.02c-.052-.01-.105-.006-.158-.023-.517-.193-.78-.768-.586-1.287z"/><path fill="#333" d="M100.877 133.604c4.41-.065 8.86-.633 13.268-1.746l13.416 10.295 2.208-16.77c24.324-14.505 34.976-45.03 23.814-71.97-9.248-22.33-30.832-35.81-53.584-35.82v.02c-2.072-.002-4.154.096-6.238.32l-.004-.024c-.45.058-.9-.18-1.064-.625-.194-.518.068-1.093.586-1.286.054-.02.107-.015.158-.026l-.002-.02c2.19-.24 4.377-.348 6.553-.35v-.01c24.36.004 46.12 14.545 55.443 37.054 5.55 13.393 6.062 28.327 1.447 42.05-4.465 13.28-13.414 24.57-25.252 31.897l-2.082 15.818c-.092.71-.557 1.312-1.217 1.586-.246.103-.506.15-.766.15-.435 0-.86-.14-1.218-.412l-12.655-9.713c-4.2.988-8.502 1.502-12.812 1.564l.002-1.986z"/><circle fill="#333" cx="60.019" cy="77" r="3.001"/><circle fill="#333" cx="76.018" cy="77" r="3"/><circle fill="#333" cx="44.019" cy="77" r="3.001"/></svg>
+
+          <span>论坛</span>
+        </a>
+      </div>
+    
+  </div>
+
+  <div class="sidebar-content">
+    <div class="topcap">
+      <span class="title-sidebar">Meteor 指南 中译本</span>
+      
+        <span class="select version-sidebar nochrome">
+          <select class="version-select">
+            
+              <option value="v1.3">1.3</option>
+            
+              <option value="v1.2">1.2</option>
+            
+          </select>
+        </span>
+      
+    </div>
+
+    
+    <div class="wrapper-search">
+      <div class="input-symbol small round">
+        <input type="text" placeholder="Search 官方指南" id="desktop-search-input" />
+        <span class="icon-search"></span>
+      </div>
+      <div class="wrapper-desktop-search-results"></div>
+    </div>
+
+    
+
+    <ul class="toc">
+      
+        <li>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="index.html" class="sidebar-link ">
+                  <span>介绍</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="code-style.html" class="sidebar-link ">
+                  <span>编码风格</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="structure.html" class="sidebar-link ">
+                  <span>Application Structure</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="1.3-migration.html" class="sidebar-link ">
+                  <span>Migrating to Meteor 1.3</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li>
+          
+            <div class="heading-toc">数据</div>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="collections.html" class="sidebar-link ">
+                  <span>数据集与数据结构</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="data-loading.html" class="sidebar-link ">
+                  <span>Publications and Data Loading</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="methods.html" class="sidebar-link ">
+                  <span>Methods</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="accounts.html" class="sidebar-link ">
+                  <span>Users and Accounts</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="testing.html" class="sidebar-link ">
+                  <span>Testing</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li>
+          
+            <div class="heading-toc">视图</div>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="routing.html" class="sidebar-link ">
+                  <span>URL 和路由</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="ui-ux.html" class="sidebar-link ">
+                  <span>User Interfaces</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc  current">
+                <a href="" class="sidebar-link  current">
+                  <span>Blaze</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="react.html" class="sidebar-link ">
+                  <span>React</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="angular.html" class="sidebar-link ">
+                  <span>Angular</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li>
+          
+            <div class="heading-toc">构建</div>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="atmosphere-vs-npm.html" class="sidebar-link ">
+                  <span>Atmosphere vs. npm</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="using-atmosphere-packages.html" class="sidebar-link ">
+                  <span>Using Atmosphere Packages</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="writing-atmosphere-packages.html" class="sidebar-link ">
+                  <span>Writing Atmosphere Packages</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="using-npm-packages.html" class="sidebar-link ">
+                  <span>Using npm Packages</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="writing-npm-packages.html" class="sidebar-link ">
+                  <span>Writing npm Packages</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="mobile.html" class="sidebar-link ">
+                  <span>Mobile</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="build-tool.html" class="sidebar-link ">
+                  <span>Build System</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li>
+          
+            <div class="heading-toc">生产环境</div>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="security.html" class="sidebar-link ">
+                  <span>Security</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="deployment.html" class="sidebar-link ">
+                  <span>Deployment and Monitoring</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li>
+          
+            <div class="heading-toc">有关本指南</div>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="CONTRIBUTING.html" class="sidebar-link ">
+                  <span>Contribution Guidelines</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="CHANGELOG.html" class="sidebar-link ">
+                  <span>Changelog</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<div class="nav dark">
+  <div class="nav-group">
+    <div class="nav-item">
+      <span class="js-sidebar-toggle">
+        <span class="icon-menu"></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="center-wrapper">
+    <img src="../images/logo-coralspace.svg" alt="Meteor 指南 中译本"/>
+    <div>官方指南</div>
+  </div>
+
+  
+  <div class="nav-group right">
+    <div class="nav-item">
+      <span class="js-search-toggle">
+        <span class="icon-search"></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="nav-search">
+    <div class="input-symbol">
+      <input type="text" placeholder="Search 官方指南" id="mobile-search-input"/>
+      <span class="icon-search"></span>
+    </div>
+
+    <div class="nav-group right">
+      <div class="nav-item">
+        <span class="js-search-toggle">
+          <span class="icon-close"></span>
+        </span>
+      </div>
+    </div>
+    
+    <div class="wrapper-mobile-search-results"></div>
+  </div>
+  
+</div>
+
+<div class="content">
+  <div class="content-wrapper">
+    <div class="header-content">
+      <h1 class="title-page">Blaze</h1>
+      
+        <div class="subtitle-page">How to use Blaze, Meteor's frontend rendering system, to build usable and maintainable user interfaces.</div>
+      
+
+      <div class="page-actions">
+        <div class="actions-group">
+          <a class="btn primary small round lowercase" href="https://github.com/ourmeteor/guide-zh/tree/master/content/blaze.md" target="_blank"><span class="icon-github"></span> <span>Edit on GitHub</span></a>
+          
+            <a class="btn tertiary small round lowercase" href="https://forums.meteor.com/t/19666"><span class="icon-comment"></span> <span>Discuss</span></a>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="document-formatting">
+      <p>After reading this guide, you’ll know:</p>
+<ol>
+<li>How to use the Spacebars language to define templates rendered by the Blaze engine.</li>
+<li>Best practices for writing reusable components in Blaze.</li>
+<li>How the Blaze rendering engine works under the hood and some advanced techniques for using it.</li>
+<li>How to test Blaze templates.</li>
+</ol>
+<p>Blaze is Meteor’s built-in reactive rendering library. Usually, templates are written in <a href="https://github.com/meteor/meteor/blob/devel/packages/spacebars/README.md" target="_blank" rel="external">Spacebars</a>, a variant of <a href="http://handlebarsjs.com" target="_blank" rel="external">Handlebars</a> designed to take advantage of <a href="https://github.com/meteor/meteor/tree/devel/packages/tracker" target="_blank" rel="external">Tracker</a>, Meteor’s reactivity system. These templates are compiled into JavaScript UI components that are rendered by the Blaze library.</p>
+<p>Blaze is not required to build applications in Meteor—you can also easily use <a href="http://react-in-meteor.readthedocs.org/en/latest/" target="_blank" rel="external">React</a> or <a href="http://www.angular-meteor.com" target="_blank" rel="external">Angular</a> to develop your UI (<a href="ui-ux.html#view-layers">here’s a comparison</a>). However, this particular article will take you through best practices in building an application in Blaze, which is used as the UI engine in all of the other articles.</p>
+<h2 id="spacebars">Spacebars</h2>
+
+<p>Spacebars is a handlebars-like templating language, built on the concept of rendering a reactively changing <em>data context</em>. Spacebars templates look like simple HTML with special “mustache” tags delimited by curly braces: <code>{{ }}</code>.</p>
+<p>As an example, consider the <code>Todos_item</code> template from the Todos example app:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"Todos_item"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"list-item &#123;&#123;checkedClass todo&#125;&#125; &#123;&#123;editingClass editing&#125;&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"checkbox"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">checked</span>=<span class="string">&#123;&#123;todo.checked&#125;&#125;</span> <span class="attr">name</span>=<span class="string">"checked"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"checkbox-custom"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;todo.text&#125;&#125;"</span> <span class="attr">placeholder</span>=<span class="string">"Task name"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"js-delete-item delete-item"</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"icon-trash"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>This template expects to be rendered with an object with key <code>todo</code> as data context (we’ll see <a href="#validate-data-context">below</a> how to enforce that). We access the properties of the <code>todo</code> using the mustache tag, such as <code>{{todo.text}}</code>. The default behavior is to render that property as a string; however for some attributes (such as <code>checked={{todo.checked}}</code>) it can be resolved as a boolean value.</p>
+<p>Note that simple string interpolations like this will always escape any HTML for you, so you don’t need to perform safety checks for XSS.</p>
+<p>Additionally we can see an example of a <em>template helper</em>—<code>{{checkedClass todo}}</code> calls out to a <code>checkedClass</code> helper defined in a separate JavaScript file. The HTML template and JavaScript file together define the <code>Todos_item</code> component:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Template.Todos_item.helpers(&#123;</span><br><span class="line">  checkedClass(todo) &#123;</span><br><span class="line">    <span class="keyword">return</span> todo.checked &amp;&amp; <span class="string">'checked'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>In the context of a Blaze helper, <code>this</code> is scoped to the current <em>data context</em> at the point the helper was used. This can be hard to reason about, so it’s often a good idea to instead pass the required data into the helper as an argument (as we do here).</p>
+<p>Apart from simple interpolation, mustache tags can be used for control flow in the template. For instance, in the <code>Lists_show</code> template, we render a list of todos like this:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;#each todo in todos&#125;&#125;</span><br><span class="line">  &#123;&#123;&gt; Todos_item (todoArgs todo)&#125;&#125;</span><br><span class="line">&#123;&#123;else&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrapper-message"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"title-message"</span>&gt;</span>No tasks here<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"subtitle-message"</span>&gt;</span>Add new tasks using the field above<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;&#123;/each&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>This snippet illustrates a few things:</p>
+<ul>
+<li>The <code>{{#each .. in}}</code> block helper which repeats a block of HTML for each element in an array or cursor, or renders the contents of the <code>{{else}}</code> block if no items exist.</li>
+<li>The template inclusion tag, <code>{{> Todos_item (todoArgs todo)}}</code> which renders the <code>Todos_item</code> component with the data context returned from the <code>todosArg</code> helper.</li>
+</ul>
+<p>You can read about the full syntax <a href="https://github.com/meteor/meteor/blob/devel/packages/spacebars/README.md" target="_blank" rel="external">in the Spacebars README</a>. In this section we’ll attempt to cover some of the important details beyond just the syntax.</p>
+<h3 id="data-contexts">Data contexts and lookup</h3>
+
+<p>We’ve seen that <code>{{todo.title}}</code> accesses the <code>title</code> property of the <code>todo</code> item on the current data context. Additionally, <code>..</code> accesses the parent data context (rarely a good idea), <code>list.todos.[0]</code> accesses the first element of the <code>todos</code> array on <code>list</code>.</p>
+<p>Note that Spacebars is very forgiving of <code>null</code> values. It will not complain if you try to access a property on a <code>null</code> value (for instance <code>foo.bar</code> if <code>foo</code> is not defined), but instead simply treats it also as null. However there are exceptions to this—trying to call a <code>null</code> function, or doing the same <em>within</em> a helper will lead to exceptions.</p>
+<h3 id="helpers">Calling helpers with arguments</h3>
+
+<p>You can provide arguments to a helper like <code>checkedClass</code> by simply placing the argument after the helper call, as in: <code>{{checkedClass todo true 'checked'}}</code>. You can also provide a list of named keyword arguments to a helper with <code>{{checkedClass todo noClass=true classname='checked'}}</code>. When you pass keyword arguments, you need to read them off of the <code>hash</code> property of the final argument. Here’s how it would look for the example we just saw:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Template.Todos_item.helpers(&#123;</span><br><span class="line">  checkedClass(todo, options) &#123;</span><br><span class="line">    <span class="keyword">const</span> classname = options.hash.classname || <span class="string">'checked'</span>;</span><br><span class="line">    <span class="keyword">if</span> (todo.checked) &#123;</span><br><span class="line">      <span class="keyword">return</span> classname;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (options.hash.noClass) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`no-<span class="subst">$&#123;classname&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Note that using keyword arguments to helpers is a little awkward, so in general it’s usually easier to avoid them. This feature was included for historical reasons to match the way keyword arguments work in Handlebars.</p>
+<p>You can also pass the output of a helper to a template inclusion or other helper. To do so, use parentheses to show precedence:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&gt; Todos_item (todoArgs todo)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>Here the <code>todo</code> is passed as argument to the <code>todoArgs</code> helper, then the output is passed into the <code>Todos_item</code> template.</p>
+<h3 id="inclusion">Template inclusion</h3>
+
+<p>You “include” a sub-component with the <code>{{> }}</code> syntax. By default, the sub-component will gain the data context of the caller, although it’s usually a good idea to be explicit. You can provide a single object which will become the entire data context (as we did with the object returned by the <code>todoArgs</code> helper above), or provide a list of keyword arguments which will be put together into one object, like so:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&gt; subComponent arg1="value-of-arg1" arg2=helperThatReturnsValueOfArg2&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>In this case, the <code>subComponent</code> component can expect a data context of the form:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  arg1: ...,</span><br><span class="line">  arg2: ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="attribute-helpers">Attribute Helpers</h3>
+
+<p>We saw above that using a helper (or data context lookup) in the form <code>checked={{todo.checked}}</code> will add the checked property to the HTML tag if <code>todo.checked</code> evaluates to true. Also, you can directly include an object in the attribute list of an HTML element to set multiple attributes at once:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> &#123;&#123;<span class="attr">attributes</span>&#125;&#125;&gt;</span>My Link<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Template.foo.helpers(&#123;</span><br><span class="line">  attributes() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      class: 'A class',</span><br><span class="line">      style: &#123;background: 'blue'&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="rendering-html">Rendering raw HTML</h3>
+
+<p>Although by default a mustache tag will escape HTML tags to avoid <a href="https://en.wikipedia.org/wiki/Cross-site_scripting" target="_blank" rel="external">XSS</a>, you can render raw HTML with the triple-mustache: <code>{{{ }}}</code>.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#123;myHtml&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Template.foo.helpers(&#123;</span><br><span class="line">  myHtml() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;h1&gt;This H1 will render&lt;/h1&gt;'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>You should be extremely careful about doing this, and always ensure you aren’t returning user-generated content (or escape it if you do!) from such a helper.</p>
+<h3 id="block-helpers">Block Helpers</h3>
+
+<p>A block helper, called with <code>{{# }}</code> is a helper that takes (and may render) a block of HTML. For instance, we saw the <code>{{#each .. in}}</code> helper above which repeats a given block of HTML once per item in a list. You can also use a template as a block helper, rendering its content via the <code>Template.contentBlock</code> and <code>Template.elseBlock</code>. For instance, you could create your own <code>{{#if}}</code> helper with:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"myIf"</span>&gt;</span></span><br><span class="line">  &#123;&#123;#if condition&#125;&#125;</span><br><span class="line">    &#123;&#123;&gt; Template.contentBlock&#125;&#125;</span><br><span class="line">  &#123;&#123;else&#125;&#125;</span><br><span class="line">    &#123;&#123;&gt; Template.elseBlock&#125;&#125;</span><br><span class="line">  &#123;&#123;/if&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"caller"</span>&gt;</span></span><br><span class="line">  &#123;&#123;#myIf condition=true&#125;&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>I'll be rendered!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  &#123;&#123;else&#125;&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>I won't be rendered<span class="tag">&lt;/<span class="name">h1</span>&gt;</span>    </span><br><span class="line">  &#123;&#123;/myIf&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="builtin-block-helpers">Built-in Block Helpers</h3>
+
+<p>There are a few built-in block helpers that are worth knowing about:</p>
+<h4 id="if-unless">If / Unless</h4>
+
+<p>The <code>{{#if}}</code> and <code>{{#unless}}</code> helpers are fairly straightforward but invaluable for controlling the control flow of a template. Both operate by evaluating and checking their single argument for truthiness. In JS <code>null</code>, <code>undefined</code>, <code>0</code>, <code>&#39;&#39;</code>, <code>[]</code>, and <code>false</code> are considered “falsy”, and all other values are “truthy”.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;#if something&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>It's true<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&#123;&#123;else&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>It's false<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">&#123;&#123;/if&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="each-in">Each-in</h4>
+
+<p>The <code>{{#each .. in}}</code> helper is a convenient way to step over a list while retaining the outer data context.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;#each todo in todos&#125;&#125;</span><br><span class="line">  &#123;&#123;#each tag in todo.tags&#125;&#125;</span><br><span class="line">    <span class="comment">&lt;!-- in here, both todo and tag are in scope --&gt;</span></span><br><span class="line">  &#123;&#123;/each&#125;&#125;</span><br><span class="line">&#123;&#123;/each&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="let">Let</h4>
+
+<p>The <code>{{#let}}</code> helper is useful to capture the output of a helper or document subproperty within a template. Think of it just like defining a variable using JavaScript <code>let</code>.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;#let name=person.bio.firstName color=generateColor&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;&#123;name&#125;&#125; gets a &#123;&#123;color&#125;&#125; card!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;&#123;/let&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>Note that <code>name</code> and <code>color</code> (and <code>todo</code> above) are only added to scope in the template; they <em>are not</em> added to the data context. Specifically this means that inside helpers and event handlers, you cannot access them with <code>this.name</code> or <code>this.color</code>. If you need to access them inside a helper, you should pass them in as an argument (like we do with <code>(todoArgs todo)</code> above).</p>
+<h4 id="each-and-with">Each and With</h4>
+
+<p>There are also two Spacebars built-in helpers, <code>{{#each}}</code>, and <code>{{#with}}</code>, which we do not recommend using (see <a href="#use-each-in">use each-in</a> below). These block helpers change the data context within a template, which can be difficult to reason about.</p>
+<p>Like <code>{{#each .. in}}</code>, <code>{{#each}}</code> iterates over an array or cursor, changing the data context within its content block to be the item in the current iteration. <code>{{#with}}</code> simply changes the data context inside itself to the provided object. In most cases it’s better to use <code>{{#each .. in}}</code> and <code>{{#let}}</code> instead, just like it’s better to declare a variable than use the JavaScript <code>with</code> keyword.</p>
+<h4 id="strictness">Strictness</h4>
+
+<p>Spacebars has a very strict HTML parser. For instance, you can’t self-close a <code>div</code> (<code>&lt;div/&gt;</code>) in Spacebars, and you need to close some tags that a browser might not require you to (such as a <code>&lt;p&gt;</code> tag). Thankfully, the parser will warn you when it can’t understand your code with an exact line number for the error.</p>
+<h4 id="escaping">Escaping</h4>
+
+<p>To insert literal curly braces: <code>{{ }}</code> and the like, add a pipe character, <code>|</code>, to the opening braces:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- will render as &lt;h1&gt;All about &#123;&#123;&lt;/h1&gt; --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>All about &#123;&#123;|<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- will render as &lt;h1&gt;All about &#123;&#123;&#123;&lt;/h1&gt; --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>All about &#123;&#123;&#123;|<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="reusable-components">Reusable components in Blaze</h2>
+
+<p>In <a href="ui-ux.html#smart-components">UI/UX article</a> we discussed the merits of creating reusable components that interact with their environment in clear and minimal ways.</p>
+<p>Although Blaze, which is a simple template-based rendering engine, doesn’t enforce a lot of these principles (unlike other frameworks like React and Angular) you can enjoy most of the same benefits by following some conventions when writing your Blaze components. This section will outline some of these “best practices” for writing reusable Blaze components.</p>
+<p>Examples below will reference the <code>Lists_show</code> component from the Todos example app.</p>
+<h3 id="validate-data-context">Validate data context</h3>
+
+<p>In order to ensure your component always gets the data you expect, you should validate the data context provided to it. This is just like validating the arguments to any Meteor Method or publication, and lets you write your validation code in one place and then assume that the data is correct.</p>
+<p>You can do this in a Blaze component’s <code>onCreated()</code> callback, like so:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show.onCreated(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.autorun(() =&gt; &#123;</span><br><span class="line">    <span class="keyword">new</span> SimpleSchema(&#123;</span><br><span class="line">      list: &#123;type: <span class="built_in">Function</span>&#125;,</span><br><span class="line">      todosReady: &#123;type: <span class="built_in">Boolean</span>&#125;,</span><br><span class="line">      todos: &#123;type: Mongo.Cursor&#125;</span><br><span class="line">    &#125;).validate(Template.currentData());</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>We use an <code>autorun()</code> here to ensure that the data context is re-validated whenever it changes.</p>
+<h3 id="name-data-contexts">Name data contexts to template inclusions</h3>
+
+<p>It’s tempting to just provide the object you’re interested in as the entire data context of the template (like <code>{{> Todos_item todo}}</code>). It’s better to explicitly give it a name (<code>{{> Todos_item todo=todo}}</code>). There are two primary reasons for this:</p>
+<ol>
+<li>When using the data in the sub-component, it’s a lot clearer what you are accessing; <code>{{todo.title}}</code> is clearer than <code>{{title}}</code>.</li>
+<li>It’s more flexible, in case you need to give the component more arguments in the future.</li>
+</ol>
+<p>For instance, in the case of the <code>Todos_item</code> sub-component, we need to provide two extra arguments to control the editing state of the item, which would have been a hassle to add if the item was used with a single <code>todo</code> argument.</p>
+<p>Additionally, for better clarity, always explicitly provide a data context to an inclusion rather than letting it inherit the context of the template where it was rendered:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- bad: inherits data context, who knows what is in there! --&gt;</span></span><br><span class="line">&#123;&#123;&gt; myTemplate&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- explicitly passes empty data context --&gt;</span></span><br><span class="line">&#123;&#123;&gt; myTemplate ""&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="use-each-in">Prefer <code>{{#each .. in}}</code></h3>
+
+<p>For similar reasons to the above, it’s better to use <code>{{#each todo in todos}}</code> rather than the older <code>{{#each todos}}</code>. The second sets the entire data context of its children to a single <code>todo</code> object, and makes it difficult to access any context from outside of the block.</p>
+<p>The only reason not to use <code>{{#each .. in}}</code> would be because it makes it difficult to access the <code>todo</code> symbol inside event handlers. Typically the solution to this is to use a sub-component to render the inside of the loop:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;#each todo in todos&#125;&#125;</span><br><span class="line">  &#123;&#123;&gt; Todos_item todo=todo&#125;&#125;</span><br><span class="line">&#123;&#123;/each&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>Now you can access <code>this.todo</code> inside <code>Todos_item</code> event handlers and helpers.</p>
+<h3 id="pass-data-into-helpers">Pass data into helpers</h3>
+
+<p>Rather than accessing data in helpers via <code>this</code>, it’s better to pass the arguments in directly from the template. So our <code>checkedClass</code> helper takes the <code>todo</code> as an argument and inspects it directly, rather than implicitly using <code>this.todo</code>. We do this for similar reasons to why we always pass arguments to template inclusions, and because “template variables” (such as the iteratee of the <code>{{#each .. in}}</code> helper) are not available on <code>this</code>.</p>
+<h3 id="use-template-instance">Use the template instance</h3>
+
+<p>Although Blaze’s simple API doesn’t necessarily encourage a componentized approach, you can use the <em>template instance</em> as a convenient place to store internal functionality and state. The template instance can be accessed via <code>this</code> inside Blaze’s lifecycle callbacks and as <code>Template.instance()</code> in event handlers and helpers. It’s also passed as the second argument to event handlers.</p>
+<p>We suggest a convention of naming it <code>instance</code> in these contexts and assigning it at the top of every relevant helper. For instance:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show.helpers(&#123;</span><br><span class="line">  todoArgs(todo) &#123;</span><br><span class="line">    <span class="keyword">const</span> instance = Template.instance();</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      todo,</span><br><span class="line">      editing: instance.state.equals(<span class="string">'editingTodo'</span>, todo._id),</span><br><span class="line">      onEditingChange(editing) &#123;</span><br><span class="line">        instance.state.set(<span class="string">'editingTodo'</span>, editing ? todo._id : <span class="literal">false</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Template.Lists_show.events(&#123;</span><br><span class="line">  <span class="string">'click .js-cancel'</span>(event, instance) &#123;</span><br><span class="line">    instance.state.set(<span class="string">'editingTodo'</span>, <span class="literal">false</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="reactive-dict-state">Use a reactive dict for state</h3>
+
+<p>The <a href="https://atmospherejs.com/meteor/reactive-dict" target="_blank" rel="external"><code>reactive-dict</code></a> package lets you define a simple reactive key-value dictionary. It’s a convenient way to attach internal state to a component. We create the <code>state</code> dictionary in the <code>onCreated</code> callback, and attach it to the template instance:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show.onCreated(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.state = <span class="keyword">new</span> ReactiveDict();</span><br><span class="line">  <span class="keyword">this</span>.state.setDefault(&#123;</span><br><span class="line">    editing: <span class="literal">false</span>,</span><br><span class="line">    editingTodo: <span class="literal">false</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Once the state dictionary has been created we can access it from helpers and modify it in event handlers (see the code snippet above).</p>
+<h3 id="attach-functions-to-instance">Attach functions to the instance</h3>
+
+<p>If you have common functionality for a template instance that needs to be abstracted or called from multiple event handlers, it’s sensible to attach it as functions directly to the template instance in the <code>onCreated()</code> callback:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  updateName,</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'../../api/lists/methods.js'</span>;</span><br><span class="line"></span><br><span class="line">Template.Lists_show.onCreated(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.saveList = () =&gt; &#123;</span><br><span class="line">    <span class="keyword">this</span>.state.set(<span class="string">'editing'</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">    updateName.call(&#123;</span><br><span class="line">      listId: <span class="keyword">this</span>.data.list._id,</span><br><span class="line">      newName: <span class="keyword">this</span>.$(<span class="string">'[name=name]'</span>).val()</span><br><span class="line">    &#125;, (err) =&gt; &#123;</span><br><span class="line">      err &amp;&amp; alert(err.error);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Then you can call that function from within an event handler:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show.events(&#123;</span><br><span class="line">  <span class="string">'submit .js-edit-form'</span>(event, instance) &#123;</span><br><span class="line">    event.preventDefault();</span><br><span class="line">    instance.saveList();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="scope-dom-lookups-to-instance">Scope DOM lookups to the template instance</h3>
+
+<p>It’s a bad idea to look up things directly in the DOM with jQuery’s global <code>$()</code>. It’s easy to select some element on the page that has nothing to do with the current component. Also, it limits your options on rendering <em>outside</em> of the main document (see testing section below).</p>
+<p>Instead, Blaze gives you a way to scope a lookup to within the current template instance. Typically you use this either from a <code>onRendered()</code> callback to setup jQuery plugins (called via <code>Template.instance().$()</code> or <code>this.$()</code>), or from event handlers to call DOM functions directly (called via <code>Template.instance().$()</code> or using the event handler’s second argument like <code>instance.$()</code>). For instance, when the user clicks the add todo button, we want to focus the <code>&lt;input&gt;</code> element:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show.events(&#123;</span><br><span class="line">  <span class="string">'click .js-todo-add'</span>(event, instance) &#123;</span><br><span class="line">    instance.$(<span class="string">'.js-todo-new input'</span>).focus();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="js-selectors-for-events">Use <code>.js-</code> selectors for event maps</h3>
+
+<p>When you are setting up event maps in your JS files, you need to ‘select’ the element in the template that the event attaches to. Rather than using the same CSS class names that are used to style the elements, it’s better practice to use classnames that are specifically added for those event maps. A reasonable convention is a class starting with <code>js-</code> to indicate it is used by the JavaScript. For instance <code>.js-todo-add</code> above.</p>
+<h3 id="passing-template-content">Passing HTML content as a template argument</h3>
+
+<p>If you need to pass in content to a sub-component (for instance the content of a modal dialog), you can use the <a href="#block-helpers">custom block helper</a> to provide a block of content. If you need more flexibility, typically just providing the component name as an argument is the way to go. The sub-component can then just render that component with:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&gt; Template.dynamic templateName dataContext&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>This is more or less the way that the <a href="https://atmospherejs.com/kadira/blaze-layout" target="_blank" rel="external"><code>kadira:blaze-layout</code></a> package works.</p>
+<h3 id="pass-callbacks">Pass callbacks</h3>
+
+<p>If you need to communicate <em>up</em> the component hierarchy, it’s best to pass a <em>callback</em> for the sub-component to call.</p>
+<p>For instance, only one todo item can be in the editing state at a time, so the <code>Lists_show</code> component manages the state of which is edited. When you focus on an item, that item needs to tell the list’s component to make it the “edited” one. To do that, we pass a callback into the <code>Todos_item</code> component, and the child calls it whenever the state needs to be updated in the parent:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&gt; Todos_item (todoArgs todo)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show.helpers(&#123;</span><br><span class="line">  todoArgs(todo) &#123;</span><br><span class="line">    <span class="keyword">const</span> instance = Template.instance();</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      todo,</span><br><span class="line">      editing: instance.state.equals(<span class="string">'editingTodo'</span>, todo._id),</span><br><span class="line">      onEditingChange(editing) &#123;</span><br><span class="line">        instance.state.set(<span class="string">'editingTodo'</span>, editing ? todo._id : <span class="literal">false</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Template.Todos_item.events(&#123;</span><br><span class="line">  <span class="string">'focus input[type=text]'</span>() &#123;</span><br><span class="line">    <span class="keyword">this</span>.onEditingChange(<span class="literal">true</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="onrendered-for-libs">Use <code>onRendered()</code> for 3rd party libraries</h3>
+
+<p>As we mentioned above, the <code>onRendered()</code> callback is typically the right spot to call out to third party libraries that expect a pre-rendered DOM (such as jQuery plugins). The <code>onRendered()</code> callback is triggered <em>once</em> after the component has rendered and attached to the DOM for the first time.</p>
+<p>Occasionally, you may need to wait for data to become ready before it’s time to attach the plugin (although typically it’s a better idea to use a sub-component in this use case). To do so, you can setup an <code>autorun</code> in the <code>onRendered()</code> callback. For instance, in the <code>Lists_show_page</code> component, we want to wait until the subscription for the list is ready (i.e. the todos have rendered) before we hide the launch screen:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show_page.onRendered(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.autorun(() =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.subscriptionsReady()) &#123;</span><br><span class="line">      <span class="comment">// Handle for launch screen defined in app-body.js</span></span><br><span class="line">      AppLaunchScreen.listRender.release();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="smart-components">Writing smart components with Blaze</h2>
+
+<p>Some of your components will need to access state outside of their data context—for instance, data from the server via subscriptions or the contents of client-side store. As discussed in the <a href="data-loading.html#patterns">data loading</a> and <a href="ui-ux.html#smart-components">UI</a> articles, you should be careful and considered in how use such smart components.</p>
+<p>All of the suggestions about reusable components apply to smart components. In addition:</p>
+<h3 id="subscribing">Subscribe from <code>onCreated</code></h3>
+
+<p>You should subscribe to publications from the server from an <code>onCreated</code> callback (within an <code>autorun</code> block if you have reactively changing arguments). In the Todos example app, in the <code>Lists_show_page</code> template we subscribe to the <code>todos.inList</code> publication based on the current <code>_id</code> FlowRouter param:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show_page.onCreated(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.getListId = () =&gt; FlowRouter.getParam(<span class="string">'_id'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.autorun(() =&gt; &#123;</span><br><span class="line">    <span class="keyword">this</span>.subscribe(<span class="string">'todos.inList'</span>, <span class="keyword">this</span>.getListId());</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>We use <code>this.subscribe()</code> as opposed to <code>Meteor.subscribe()</code> so that the component automatically keeps track of when the subscriptions are ready. We can use this information in our HTML template with the built-in <code>{{Template.subscriptionsReady}}</code> helper or within helpers using <code>instance.subscriptionsReady()</code>.</p>
+<p>Notice that in this component we are also accessing the global client-side state store <code>FlowRouter</code>, which we wrap in a instance method called <code>getListId()</code>. This instance method is called both from the <code>autorun</code> in <code>onCreated</code>, and from the <code>listIdArray</code> helper:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show_page.helpers(&#123;</span><br><span class="line">  <span class="comment">// We use #each on an array of one item so that the "list" template is</span></span><br><span class="line">  <span class="comment">// removed and a new copy is added when changing lists, which is</span></span><br><span class="line">  <span class="comment">// important for animation purposes.</span></span><br><span class="line">  listIdArray() &#123;</span><br><span class="line">    <span class="keyword">const</span> instance = Template.instance();</span><br><span class="line">    <span class="keyword">const</span> listId = instance.getListId();</span><br><span class="line">    <span class="keyword">return</span> Lists.findOne(listId) ? [listId] : [];</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="fetch-in-smart-components">Fetch in helpers</h3>
+
+<p>As described in the <a href="ui-ux.html#smart-components">UI/UX article</a>, you should fetch data in the same component where you subscribed to that data. In a Blaze smart component, it’s usually simplest to fetch the data in a helper, which you can then use to pass data into a reusable child component. For example, in the <code>Lists_show_page</code>:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&gt; Lists_show (listArgs listId)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>The <code>listArgs</code> helper fetches the data that we’ve subscribed to above:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show_page.helpers(&#123;</span><br><span class="line">  listArgs(listId) &#123;</span><br><span class="line">    <span class="keyword">const</span> instance = Template.instance();</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      todosReady: instance.subscriptionsReady(),</span><br><span class="line">      <span class="comment">// We pass `list` (which contains the full list, with all fields, as a function</span></span><br><span class="line">      <span class="comment">// because we want to control reactivity. When you check a todo item, the</span></span><br><span class="line">      <span class="comment">// `list.incompleteCount` changes. If we didn't do this the entire list would</span></span><br><span class="line">      <span class="comment">// re-render whenever you checked an item. By isolating the reactiviy on the list</span></span><br><span class="line">      <span class="comment">// to the area that cares about it, we stop it from happening.</span></span><br><span class="line">      list() &#123;</span><br><span class="line">        <span class="keyword">return</span> Lists.findOne(listId);</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// By finding the list with only the `_id` field set, we don't create a dependency on the</span></span><br><span class="line">      <span class="comment">// `list.incompleteCount`, and avoid re-rendering the todos when it changes</span></span><br><span class="line">      todos: Lists.findOne(listId, &#123;fields: &#123;_id: <span class="literal">true</span>&#125;&#125;).todos()</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="reusing-code">Reusing code in Blaze</h2>
+
+<p>It’s common to want to reuse code between two otherwise unrelated components. There are two main ways to do this in Blaze.</p>
+<h3 id="composition">Composition</h3>
+
+<p>If possible, it’s usually best to try and abstract out the reusable part of the two components that need to share functionality into a new, smaller component. If you follow the patterns for <a href="#reusable-components">reusable components</a>, it should be simple to reuse this sub-component everywhere you need this functionality.</p>
+<p>For instance, suppose you have many places in your application where you need an input to blur itself when you click the “esc” key. If you were building an autocomplete widget that also wanted this functionality, you could compose a <code>blurringInput</code> inside your <code>autocompleteInput</code>:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"autocompleteInput"</span>&gt;</span></span><br><span class="line">  &#123;&#123;&gt; blurringInput name=name value=currentValue onChange=onChange&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Template.autocompleteInput.helpers(&#123;</span><br><span class="line">  currentValue() &#123;</span><br><span class="line">    <span class="comment">// perform complex logic to determine the auto-complete's current text value</span></span><br><span class="line">  &#125;,</span><br><span class="line">  onChange() &#123;</span><br><span class="line">    <span class="comment">// This is the `autocompleteInput`'s template instance</span></span><br><span class="line">    <span class="keyword">const</span> instance = Template.instance();</span><br><span class="line">    <span class="comment">// The second argument to this function is the template instance of the `blurringInput`.</span></span><br><span class="line">    <span class="keyword">return</span> (event) =&gt; &#123;</span><br><span class="line">      <span class="comment">// read the current value out of the input, potentially change the value</span></span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>By making the <code>blurringInput</code> flexible and reusable, we can avoid re-implementing functionality in the <code>autocompleteInput</code>.</p>
+<h3 id="libraries">Libraries</h3>
+
+<p>It’s usually best to keep your view layer as thin as possible and contain a component to whatever specific task it specifically needs to do. If there’s heavy lifting involved (such as complicated data loading logic), it often makes sense to abstract it out into a library that simply deals with the logic alone and doesn’t deal with the Blaze system at all.</p>
+<p>For example, if a component requires a lot of complicated <a href="http://d3js.org" target="_blank" rel="external">D3</a> code for drawing graphs, it’s likely that that code itself could live in a separate module that’s called by the component. That makes it easier to abstract the code later and share it between various components that need to all draw graphs.</p>
+<h3 id="global-helpers">Global Helpers</h3>
+
+<p>Another way to share commonly used view code is a global Spacebars helper. You can define these with the <code>Template.registerHelper()</code> function. Typically you register helpers to do simple things (like rendering dates in a given format) which don’t justify a separate sub-component. For instance, you could do:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Template.registerHelper(<span class="string">'shortDate'</span>, (date) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> moment(date).format(<span class="string">"MMM do YY"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"myBike"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dl</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">dt</span>&gt;</span>Date registered<span class="tag">&lt;/<span class="name">dt</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">dd</span>&gt;</span>&#123;&#123;shortDate bike.registeredAt&#125;&#125;<span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">dl</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="understanding-blaze">Understanding Blaze</h2>
+
+<p>Although Blaze is a very intuitive rendering system, it does have some quirks and complexities that are worth knowing about when you are trying to do complex things.</p>
+<h3 id="re-rendering">Re-rendering</h3>
+
+<p>Blaze is intentionally opaque about re-rendering. Tracker and Blaze are designed as “eventual consistency” systems that end up fully reflecting any data change eventually, but may take a few re-runs or re-renders in getting there, depending on how they are used. This can be frustrating if you are trying to carefully control when your component is re-rendered.</p>
+<p>The first thing to consider here is if you actually need to care about your component re-rendering. Blaze is optimized so that it typically doesn’t matter if a component is re-rendered even if it strictly shouldn’t. If you make sure that your helpers are cheap to run and consequently rendering is not expensive, then you probably don’t need to worry about this.</p>
+<p>The main thing to understand about how Blaze re-renders is that re-rendering happens at the level of helpers and template inclusions. Whenever the <em>data context</em> of a component changes, it necessarily must re-run <em>all</em> helpers and data accessors (as <code>this</code> within the helper is the data context and thus will have changed).</p>
+<p>Additionally, a helper will re-run if any <em>reactive data source</em> accessed from within <em>that specific helper</em> changes.</p>
+<p>You can often work out <em>why</em> a helper has re-run by tracing the source of the reactive invalidation:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Template.myTemplate.helpers(&#123;</span><br><span class="line">  helper() &#123;</span><br><span class="line">    <span class="comment">// When this helper is scheduled to re-run, the `console.trace` will log a stack trace of where</span></span><br><span class="line">    <span class="comment">// the invalidation has come from (typically a `changed` message from some reactive variable).</span></span><br><span class="line">    Tracker.onInvalidate(() =&gt; <span class="built_in">console</span>.trace());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="controlling-re-rendering">Controlling re-rendering</h3>
+
+<p>If your helper or sub-component is expensive to run, and often re-runs without any visible effect, you can short circuit unnecessary re-runs by using a more subtle reactive data source. The <a href="https://atmospherejs.com/peerlibrary/computed-field" target="_blank" rel="external"><code>peerlibrary:computed-field</code></a> package helps achieve this pattern.</p>
+<h3 id="attribute-helpers">Attribute helpers</h3>
+
+<p>Setting tag attributes via helpers (e.g. <code>&lt;div {{attributes}}&gt;</code>) is a neat tool and has some precedence rules that make it more useful. Specifically, when you use it more than once on a given element, the attributes are composed (rather than the second set of attributes simply replacing the first). So you can use one helper to set one set of attributes and a second to set another. For instance:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"myTemplate"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"my-div"</span> &#123;&#123;<span class="attr">classes</span> '<span class="attr">foo</span>' '<span class="attr">bar</span>'&#125;&#125; &#123;&#123;<span class="attr">backgroundImageStyle</span> '<span class="attr">my-image.jpg</span>'&#125;&#125;&gt;</span>My div<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Template.myTemplate.helpers(&#123;</span><br><span class="line">  classes(names) &#123;</span><br><span class="line">    return &#123;class: names.map(n =&gt; `my-template-$&#123;n&#125;`)&#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  backgroundImageStyle(imageUrl) &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      style: &#123;</span><br><span class="line">        backgroundImage: `url($&#123;imageUrl&#125;)`</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="lookups">Lookup order</h3>
+
+<p>Another complicated topic in Blaze is name lookups. In what order does Blaze look when you write <code>{{something}}</code>? It runs in the following order:</p>
+<ol>
+<li>Helper defined on the current component</li>
+<li>Binding (eg. from <code>{{#let}}</code> or <code>{{#each in}}</code>) in current scope</li>
+<li>Template name</li>
+<li>Global helper</li>
+<li>Field on the current data context</li>
+</ol>
+<h3 id="build-system">Blaze and the build system</h3>
+
+<p>As mentioned in the <a href="build-tool.html#blaze">build system article</a>, the <a href="https://atmospherejs.com/meteor/blaze-html-templates" target="_blank" rel="external"><code>blaze-html-templates</code></a> package scans your source code for <code>.html</code> files, picks out <code>&lt;template name=&quot;templateName&quot;&gt;</code> tags, and compiles them into a JavaScript file that defines a function that implements the component in code, attached to the <code>Template.templateName</code> symbol.</p>
+<p>This means when you render a Blaze template, you are simply running a function on the client that corresponds to the Spacebars content you defined in the <code>.html</code> file.</p>
+<h3 id="views">What is a view?</h3>
+
+<p>One of the most core concepts in Blaze is the “view”, which is a building block that represents a reactively rendering area of a template. The view is the machinery that works behind the scenes to track reactivity, do lookups, and re-render appropriately when data changes. The view is the unit of re-rendering in Blaze. You can even use the view tree to walk the rendered component hierarchy, but it’s better to avoid this in favor of communicating between components using callbacks, template arguments, or global data stores.</p>
+<p>You can read more about views in the <a href="http://docs.meteor.com/#/full/blaze_view" target="_blank" rel="external">Blaze docs</a>.</p>
+
+    </div>
+  </div>
+
+  <div class="pagination">
+    <div class="content-wrapper">
+      
+      
+        <a class="link primary prev"
+          href="atmosphere-vs-npm.html">
+          <span class="icon-arrow-left-alt"></span>
+          <span class="subtitle-pagination">Previous</span>
+          Atmosphere vs. npm
+        </a>
+      
+      
+        <a class="link primary next"
+          href="build-tool.html">
+          <span class="subtitle-pagination">Next</span>
+          Build System
+          <span class="icon-arrow-right-alt"></span>
+        </a>
+      
+    </div>
+  </div>
+
+  <div class="github">
+    <a class="link tertiary " href="https://github.com/ourmeteor/guide-zh/tree/master/content/blaze.md" target="_blank">
+      <span class="icon-github"></span>Edit on GitHub</a>
+  </div>
+
+  
+    <div class="discourse-comments-wrapper content-wrapper">
+      <div id='discourse-comments'></div>
+    </div>
+
+    <script type="text/javascript">
+      DiscourseEmbed = { discourseUrl: 'http://forums.meteor.com/',
+                         topicId: 19666 };
+
+      (function() {
+        var d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+        d.src = DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+      })();
+    </script>
+  
+</div>
+
+    <script src="/script/smooth-scroll.min.js"></script>
+    <script src="/script/main.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+    <script>
+      // nectar ninja
+      (function(){
+        var handle = '@meteorjs';
+        var a = document.createElement('script');
+        var m = document.getElementsByTagName('script')[0];
+        a.async = 1;
+        a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+        m.parentNode.insertBefore(a, m);
+      })();
+
+     
+      
+        // Segment Tracking
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
+        analytics.load("zQx6cQifkTU79E3L0XAnmrOXP2A5bC6r");
+        analytics.page()
+        }}();
+      
+
+      // search box
+      
+
+        ['desktop', 'mobile'].forEach(function(type) {
+          var search = docsearch({
+            apiKey: 'b123b42bb515f300dc09dc88f7695ec1',
+            indexName: 'meteor_guide',
+            inputSelector: '#' + type + '-search-input',
+            autocompleteOptions: {
+              dropdownMenuContainer: '.wrapper-' + type + '-search-results',
+              debug: true
+            }
+          }).autocomplete;
+
+          var sidebar = document.querySelector('.sidebar-content');
+          search.on('autocomplete:opened', function() {
+            sidebar.classList.add('searching');
+          });
+          search.on('autocomplete:closed', function() {
+            sidebar.classList.remove('searching');
+          });
+          search.on('autocomplete:updated', function() {
+            if (search.val() === '') {
+              search.autocomplete.close();
+            }
+          });
+        });
+      
+
+      
+        var REDIRECTS = {
+  "/using-packages.html": "atmosphere-vs-npm.html",
+  "/using-packages.html#npm": "using-npm-packages.html",
+  "/using-packages.html#client-npm": "using-npm-packages.html#client-npm",
+  "/using-packages.html#installing-npm": "using-npm-packages.html#installing-npm",
+  "/using-packages.html#using-npm": "using-npm-packages.html#using-npm",
+  "/using-packages.html#npm-styles": "using-npm-packages.html#npm-styles",
+  "/using-packages.html#npm-shrinkwrap": "using-npm-packages.html#npm-shrinkwrap",
+  "/using-packages.html#atmosphere": "using-atmosphere-packages.html",
+  "/using-packages.html#atmosphere-searching": "using-atmosphere-packages.html#atmosphere-searching",
+  "/using-packages.html#atmosphere-naming": "using-atmosphere-packages.html#atmosphere-naming",
+  "/using-packages.html#installing-atmosphere": "using-atmosphere-packages.html#installing-atmosphere",
+  "/using-packages.html#using-atmosphere": "using-atmosphere-packages.html#using-atmosphere",
+  "/using-packages.html#importing-atmosphere-styles": "using-atmosphere-packages.html#importing-atmosphere-styles",
+  "/using-packages.html#peer-npm-dependencies": "using-atmosphere-packages.html#peer-npm-dependencies",
+  "/using-packages.html#package-namespacing": "using-atmosphere-packages.html#package-namespacing",
+  "/using-packages.html#async-callbacks": "using-npm-packages.html#async-callbacks",
+  "/using-packages.html#bind-environment": "using-npm-packages.html#bind-environment",
+  "/using-packages.html#wrap-async": "using-npm-packages.html#wrap-async",
+  "/using-packages.html#promises": "using-npm-packages.html#promises",
+  "/using-packages.html#overriding-packages": "writing-npm-packages.html#overriding-npm-packages",
+  "/using-packages.html#npm-overriding": "writing-npm-packages.html#overriding-npm-packages",
+  "/using-packages.html#atmosphere-overriding": "writing-atmosphere-packages.html#overriding-atmosphere-packages",
+  "/using-packages.html#npm-shrinkpack": "using-npm-packages.html#npm-shrinkpack",
+  "/writing-packages.html": "writing-atmosphere-packages.html",
+  "/writing-packages.html#npm-vs-atmosphere": "atmosphere-vs-npm.html",
+  "/writing-packages.html#creating-npm": "writing-npm-packages.html",
+  "/writing-packages.html#including-in-app": "writing-npm-packages.html#including-in-app",
+  "/writing-packages.html#publishing-npm": "writing--packages.html#publishing-npm",
+  "/writing-packages.html#creating": "writing-atmosphere-packages.html",
+  "/writing-packages.html#adding-files": "writing-atmosphere-packages.html#adding-files",
+  "/writing-packages.html#adding-javascript": "writing-atmosphere-packages.html#adding-javascript",
+  "/writing-packages.html#adding-css": "writing-atmosphere-packages.html#adding-css",
+  "/writing-packages.html#adding-style": "writing-atmosphere-packages.html#adding-style",
+  "/writing-packages.html#adding-assests": "writing-atmosphere-packages.html#adding-assets",
+  "/writing-packages.html#exporting": "writing-atmosphere-packages.html#exporting",
+  "/writing-packages.html#dependencies": "writing-atmosphere-packages.html#dependencies",
+  "/writing-packages.html#atmosphere-dependencies": "writing-atmosphere--packages.html#atmosphere-dependencies",
+  "/writing-packages.html#meteor-version-dependencies": "writing-atmosphere-packages.html#meteor-version-dependencies",
+  "/writing-packages.html#version-constraints": "writing-atmosphere-packages.html#version-constraints",
+  "/writing-packages.html#npm-dependencies": "writing-atmosphere-packages.html#npm-dependencies",
+  "/writing-packages.html#peer-npm-dependencies": "writing-atmosphere-packages.html#peer-npm-dependencies",
+  "/writing-packages.html#cordova-plugins": "writing-atmosphere-packages.html#cordova-plugins",
+  "/writing-packages.html#testing": "writing-atmosphere-packages.html#testing",
+  "/writing-packages.html#testing-with-peer-dependencies": "writing-atmosphere-packages.html#testing-with-peer-dependencies",
+  "/writing-packages.html#local-vs-published": "writing-atmosphere-packages.html#local-vs-published",
+  "/writing-packages.html#build-plugins": "build-tool.html#build-plugins",
+  "/writing-packages.html#types-of-build-plugins": "build-tool.html#types-of-build-plugins",
+  "/writing-packages.html#writing-build-plugins": "build-tool.html#writing-build-plugins",
+  "/writing-packages.html#caching-build-plugins": "build-tool.html#caching-build-plugins",
+  "/testing.html#simple-unit-test": "testing.html#simple-blaze-unit-test"
+};
+
+        function redirect() {
+          // Support redirects of the form /path#hash
+          var locationKey = location.pathname + location.hash;
+          if (REDIRECTS[locationKey]) {
+            location.replace(location.origin + '/' + REDIRECTS[locationKey]);
+          }
+
+          // Support redirects of the form #hash (works for any path)
+          var hashKey = location.hash;
+          if (REDIRECTS[hashKey]) {
+            location.replace(location.origin + '/' + REDIRECTS[hashKey]);
+          }
+        }
+
+        // Redirect now
+        redirect();
+
+        // Redirect on hash change
+        window.onhashchange = redirect;
+      
+    </script>
+  </body>
+</html>

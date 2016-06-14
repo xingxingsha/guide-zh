@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <!-- Basic -->
+    <title>URL 和路由 | Meteor 指南 中译本</title>
+    <meta name="description" content="如何使用 FlowRouter 通过 URL 来驱动你的 Meteor 应用的 UI。">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="../images/favicon.png" sizes="16x16 32x32 64x64">
+
+    <!-- Social -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="http://guide-zh.ourmeteor.com">
+    <meta property="og:title" content="URL 和路由 | Meteor 指南 中译本">
+    <meta property="og:description" content="如何使用 FlowRouter 通过 URL 来驱动你的 Meteor 应用的 UI。">
+    <meta property="og:image" content="">
+    <meta name="twitter:card" content="summary_image_large">
+    <meta name="twitter:site" content="@meteor">
+    <meta name="twitter:title" content="URL 和路由 | Meteor 指南 中译本">
+    <meta name="twitter:description" content="如何使用 FlowRouter 通过 URL 来驱动你的 Meteor 应用的 UI。">
+    <meta name="twitter:image" content="">
+
+    <!-- Misc -->
+    <meta name="google-site-verification" content="" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,200,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/style/style.css">
+  </head>
+  <body class="">
+    
+
+<div class="sidebar">
+  <div class="panel">
+    <div class="panel-item logo">
+      <a href="http://www.meteor.com/developers" title="Meteor Developers" target=_new >
+        <img src="../images/icon-white.svg" alt="Meteor Developers">
+        <span>Meteor Developers</span>
+      </a>
+    </div>
+    
+      <div class="panel-item "">
+        <a class="" href="http://www.meteor.com/tutorials" target=_new >
+          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><g fill="#112B49"><circle cx="80.001" cy="80" r="3"/><path d="M75.73 85.723c.193-.183.316-.437.316-.723 0-.553-.447-1-1-1-.278 0-.528.114-.71.297l-.004-.004-50.9 50.875c-.18.18-.29.43-.29.707-.002.553.445 1 .998 1 .276 0 .526-.112.708-.293l50.883-50.86zM84.235 74.4c-.18.183-.292.433-.292.71 0 .552.446 1 1 1 .275 0 .525-.113.707-.294l50.87-50.89c.204-.184.34-.442.34-.74 0-.552-.448-1-1-1-.276 0-.526.113-.707.294l-.01-.01L84.236 74.4zM136.583 135.184L85.65 84.23c-.182-.18-.432-.293-.708-.293-.552 0-1 .447-1 1 0 .278.114.528.297.71l50.927 50.95c.18.18.43.293.708.293.553 0 1-.447 1-1 0-.276-.11-.525-.292-.706zM111.19 152.602l-.003-.005-.002-.004-27.552-66.507h-.002c-.15-.362-.505-.617-.922-.617-.552 0-1 .446-1 1 0 .135.028.263.077.38v.002l.005.012 27.552 66.504c.15.362.507.617.924.617.553 0 1-.447 1-1 0-.136-.03-.265-.077-.383zM48.873 7.384L76.435 73.93h.002c.15.362.505.617.922.617.552 0 1-.447 1-1 0-.136-.03-.264-.078-.382h.003L50.72 6.616c-.15-.362-.506-.617-.923-.617-.552 0-1 .447-1 1 0 .136.03.265.078.383h-.002zM152.55 48.844h-.002L86.092 76.422c-.36.15-.617.507-.617.924 0 .553.446 1 1 1 .135 0 .265-.028.383-.077L153.32 50.69c.363-.15.618-.507.618-.924 0-.553-.447-1-1-1-.136 0-.265.028-.383.077h-.005zM7.41 111.136h.002l66.492-27.54c.36-.15.616-.507.616-.924 0-.553-.447-1-1-1-.136 0-.264.028-.382.077v-.002l-.004.002c-.002 0-.004 0-.006.002L6.638 109.29c-.36.15-.615.507-.615.924 0 .553.446 1 1 1 .135 0 .264-.028.382-.077h.004zM159 79H87c-.552 0-1 .448-1 1 0 .554.447 1 1 1h72c.553 0 1-.447 1-1s-.447-1-1-1zM23.435 24.85l50.897 50.897.008-.008c.182.18.43.29.707.29.553 0 1-.446 1-1 0-.296-.135-.555-.34-.737L24.85 23.433c-.183-.18-.433-.292-.71-.292-.55 0-.998.448-.998 1 0 .277.11.528.293.71zM6.618 50.657v.002l66.51 27.54c.003 0 .005 0 .007.002l.004.002c.117.048.245.076.38.076.554 0 1-.447 1-1 0-.417-.254-.772-.616-.923v-.002L7.392 48.813H7.39l-.005-.003c-.118-.047-.247-.076-.383-.076-.552 0-1 .447-1 1 0 .417.256.773.618.923zM153.383 109.28l-66.52-27.53-.006-.002c-.118-.048-.248-.076-.384-.076-.552 0-1 .447-1 1 0 .417.256.773.62.923l66.513 27.528c.003 0 .005 0 .007.002l.004.002c.118.048.246.076.382.076.552 0 1-.447 1-1 0-.417-.256-.772-.617-.923zM80 74c.553 0 1-.447 1-1V1c0-.553-.447-1-1-1-.552 0-1 .447-1 1v72c0 .553.447 1 1 1zM80 86c-.552 0-1 .447-1 1v72c0 .553.447 1 1 1s1-.447 1-1V87c0-.553-.447-1-1-1zM77.36 85.47c-.417 0-.772.254-.923.616l-27.564 66.53.002.002c-.05.117-.077.246-.077.382 0 .553.446 1 1 1 .416 0 .772-.255.922-.618h.002L78.28 86.86v-.004l.003-.005c.048-.117.076-.246.076-.382 0-.552-.448-1-1-1zM82.708 74.547c.417 0 .772-.255.923-.618h.003l27.56-66.547h-.004c.048-.12.076-.247.076-.383 0-.553-.447-1-1-1-.416 0-.772.255-.922.618h-.002l-27.56 66.546h.004c-.05.12-.077.247-.077.383-.002.553.445 1 .998 1zM74 80c0-.552-.446-1-1-1H1c-.552 0-1 .447-1 1 0 .553.447 1 1 1h72c.554 0 1-.446 1-1z"/></g></svg>
+          <span>教程</span>
+        </a>
+      </div>
+    
+      <div class="panel-item active"">
+        <a class="" href="http://guide.meteor.com"  >
+          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><path fill="#BDA671" d="M80 1.988c43.01 0 78 34.99 78 78s-34.99 78-78 78-78-34.99-78-78 34.99-78 78-78m0-2c-44.183 0-80 35.817-80 80s35.817 80 80 80 80-35.817 80-80-35.817-80-80-80z"/><path fill="#BDA671" d="M126.454 33.545l-37.93 54.98-54.98 37.93 37.93-54.98 54.98-37.93m0-2c-.395 0-.79.116-1.135.354L70.336 69.826c-.2.138-.373.312-.51.51l-37.93 54.98c-.548.796-.45 1.868.232 2.55.386.388.898.587 1.414.587.395 0 .79-.116 1.135-.354l54.98-37.93c.2-.137.373-.31.51-.51l37.93-54.98c.548-.795.45-1.867-.232-2.55-.387-.386-.9-.585-1.414-.585z"/><circle fill="#BDA671" cx="79.999" cy="79.999" r="2.999"/><path fill="#BDA671" d="M135.477 50.182c-.02-.036-.04-.05-.06-.045-.173-.303-.485-.516-.858-.516-.553 0-1 .448-1 1 0 .21.078.394.188.554l-.02.007C138.358 59.766 141 69.57 141 79.99c0 33.636-27.364 61-61 61-10.42 0-20.232-2.634-28.82-7.26l-.005.02c-.144-.08-.3-.14-.478-.14-.552 0-1 .448-1 1 0 .336.176.618.43.8-.016.012-.034.025-.03.027 8.896 4.81 19.078 7.552 29.904 7.552 34.795 0 63-28.206 63-63 0-10.79-2.735-20.93-7.523-29.805zM109.65 24.47c-.002-.02.004-.04-.025-.056-8.83-4.727-18.908-7.426-29.625-7.426-34.794 0-63 28.206-63 63 0 10.79 2.73 20.935 7.514 29.81.005.01.012.004.018.01.17.312.488.532.87.532.552 0 1-.447 1-1 0-.197-.073-.37-.17-.525l.04-.002C21.642 100.223 19 90.41 19 79.988c0-33.636 27.364-61 61-61 10.4 0 20.185 2.634 28.757 7.248.02.01.036.02.055.028.116.047.24.075.37.075.554 0 1-.448 1-1 .002-.382-.22-.7-.533-.87z"/></svg>
+          <span>指南</span>
+        </a>
+      </div>
+    
+      <div class="panel-item "">
+        <a class="" href="http://docs.meteor.com"  >
+          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><path fill="#DE4F4F" d="M35.6 30.167v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .553-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .553-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .55-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .55-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .55-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .55-.447 1-1 1H35.6v5.375h89.8c.553 0 1 .447 1 1v7.375c0 .55-.447 1-1 1H35.6v5.375H80c.552 0 1 .447 1 1v10.873c1.162.413 2 1.51 2 2.816 0 1.657-1.343 3-3 3s-3-1.343-3-3c0-1.305.837-2.402 2-2.815v-9.873H34.6c-.552 0-1-.45-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.45-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.45-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.45-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.45-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.447-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.447-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.447-1-1v-7.375c0-.553.448-1 1-1h89.8v-5.375H34.6c-.552 0-1-.447-1-1s.448-1 1-1h90.8c.553 0 1 .447 1 1v7.375c0 .553-.447 1-1 1H35.6zM138 6.564H22c-1.104 0-2 .896-2 2v144c0 1.104.896 2 2 2h48.995c.258 0 .516-.097.712-.293.39-.39.39-1.022 0-1.413-.195-.195-.45-.293-.707-.293H22v-144h116v144H89.006c-.258 0-.517.097-.713.293-.39.39-.39 1.023 0 1.414.196.198.455.294.713.293H138c1.104 0 2-.895 2-2v-144c0-1.103-.896-2-2-2z"/></svg>
+          <span>API 文档</span>
+        </a>
+      </div>
+    
+      <div class="panel-item "">
+        <a class="" href="https://forums.meteor.com/" target=_new >
+          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><path fill="#333" d="M60.025 17.72c7.396 0 14.914 1.424 22.172 4.43 29.594 12.258 43.648 46.188 31.39 75.782-9.25 22.334-30.843 35.812-53.6 35.812-4.694 0-9.437-.574-14.132-1.76L32.44 142.277 30.23 125.51C5.908 111.003-4.74 80.48 6.418 53.538 15.67 31.204 37.266 17.72 60.025 17.72m0-2c-24.363 0-46.13 14.545-55.455 37.053-5.547 13.394-6.06 28.33-1.447 42.052 4.465 13.276 13.414 24.57 25.252 31.896l2.082 15.82c.092.708.557 1.31 1.217 1.585.246.104.506.152.766.152.434 0 .86-.142 1.217-.412l12.656-9.713c4.482 1.055 9.076 1.59 13.674 1.59 24.36 0 46.126-14.543 55.447-37.047 6.135-14.807 6.135-31.115.002-45.922C109.3 37.966 97.77 26.433 82.963 20.3c-7.34-3.04-15.06-4.58-22.938-4.58zM92.69 133.9c.165-.443.614-.683 1.064-.623l.004-.024c5.18.558 10.343.396 15.365-.414v2.034c-5.13.796-10.4.942-15.69.356l.002-.02c-.052-.01-.105-.006-.158-.023-.517-.193-.78-.768-.586-1.287z"/><path fill="#333" d="M100.877 133.604c4.41-.065 8.86-.633 13.268-1.746l13.416 10.295 2.208-16.77c24.324-14.505 34.976-45.03 23.814-71.97-9.248-22.33-30.832-35.81-53.584-35.82v.02c-2.072-.002-4.154.096-6.238.32l-.004-.024c-.45.058-.9-.18-1.064-.625-.194-.518.068-1.093.586-1.286.054-.02.107-.015.158-.026l-.002-.02c2.19-.24 4.377-.348 6.553-.35v-.01c24.36.004 46.12 14.545 55.443 37.054 5.55 13.393 6.062 28.327 1.447 42.05-4.465 13.28-13.414 24.57-25.252 31.897l-2.082 15.818c-.092.71-.557 1.312-1.217 1.586-.246.103-.506.15-.766.15-.435 0-.86-.14-1.218-.412l-12.655-9.713c-4.2.988-8.502 1.502-12.812 1.564l.002-1.986z"/><circle fill="#333" cx="60.019" cy="77" r="3.001"/><circle fill="#333" cx="76.018" cy="77" r="3"/><circle fill="#333" cx="44.019" cy="77" r="3.001"/></svg>
+
+          <span>论坛</span>
+        </a>
+      </div>
+    
+  </div>
+
+  <div class="sidebar-content">
+    <div class="topcap">
+      <span class="title-sidebar">Meteor 指南 中译本</span>
+      
+        <span class="select version-sidebar nochrome">
+          <select class="version-select">
+            
+              <option value="v1.3">1.3</option>
+            
+              <option value="v1.2">1.2</option>
+            
+          </select>
+        </span>
+      
+    </div>
+
+    
+    <div class="wrapper-search">
+      <div class="input-symbol small round">
+        <input type="text" placeholder="Search 官方指南" id="desktop-search-input" />
+        <span class="icon-search"></span>
+      </div>
+      <div class="wrapper-desktop-search-results"></div>
+    </div>
+
+    
+
+    <ul class="toc">
+      
+        <li>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="index.html" class="sidebar-link ">
+                  <span>介绍</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="code-style.html" class="sidebar-link ">
+                  <span>编码风格</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="structure.html" class="sidebar-link ">
+                  <span>Application Structure</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="1.3-migration.html" class="sidebar-link ">
+                  <span>Migrating to Meteor 1.3</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li>
+          
+            <div class="heading-toc">数据</div>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="collections.html" class="sidebar-link ">
+                  <span>数据集与数据结构</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="data-loading.html" class="sidebar-link ">
+                  <span>Publications and Data Loading</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="methods.html" class="sidebar-link ">
+                  <span>Methods</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="accounts.html" class="sidebar-link ">
+                  <span>Users and Accounts</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="testing.html" class="sidebar-link ">
+                  <span>Testing</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li>
+          
+            <div class="heading-toc">视图</div>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc  current">
+                <a href="" class="sidebar-link  current">
+                  <span>URL 和路由</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="ui-ux.html" class="sidebar-link ">
+                  <span>User Interfaces</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="blaze.html" class="sidebar-link ">
+                  <span>Blaze</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="react.html" class="sidebar-link ">
+                  <span>React</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="angular.html" class="sidebar-link ">
+                  <span>Angular</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li>
+          
+            <div class="heading-toc">构建</div>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="atmosphere-vs-npm.html" class="sidebar-link ">
+                  <span>Atmosphere vs. npm</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="using-atmosphere-packages.html" class="sidebar-link ">
+                  <span>Using Atmosphere Packages</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="writing-atmosphere-packages.html" class="sidebar-link ">
+                  <span>Writing Atmosphere Packages</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="using-npm-packages.html" class="sidebar-link ">
+                  <span>Using npm Packages</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="writing-npm-packages.html" class="sidebar-link ">
+                  <span>Writing npm Packages</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="mobile.html" class="sidebar-link ">
+                  <span>Mobile</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="build-tool.html" class="sidebar-link ">
+                  <span>Build System</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li>
+          
+            <div class="heading-toc">生产环境</div>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="security.html" class="sidebar-link ">
+                  <span>Security</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="deployment.html" class="sidebar-link ">
+                  <span>Deployment and Monitoring</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li>
+          
+            <div class="heading-toc">有关本指南</div>
+          
+          <ul class="list-toc">
+            
+              
+              <li class="item-toc ">
+                <a href="CONTRIBUTING.html" class="sidebar-link ">
+                  <span>Contribution Guidelines</span>
+                </a>
+              </li>
+            
+              
+              <li class="item-toc ">
+                <a href="CHANGELOG.html" class="sidebar-link ">
+                  <span>Changelog</span>
+                </a>
+              </li>
+            
+          </ul>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<div class="nav dark">
+  <div class="nav-group">
+    <div class="nav-item">
+      <span class="js-sidebar-toggle">
+        <span class="icon-menu"></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="center-wrapper">
+    <img src="../images/logo-coralspace.svg" alt="Meteor 指南 中译本"/>
+    <div>官方指南</div>
+  </div>
+
+  
+  <div class="nav-group right">
+    <div class="nav-item">
+      <span class="js-search-toggle">
+        <span class="icon-search"></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="nav-search">
+    <div class="input-symbol">
+      <input type="text" placeholder="Search 官方指南" id="mobile-search-input"/>
+      <span class="icon-search"></span>
+    </div>
+
+    <div class="nav-group right">
+      <div class="nav-item">
+        <span class="js-search-toggle">
+          <span class="icon-close"></span>
+        </span>
+      </div>
+    </div>
+    
+    <div class="wrapper-mobile-search-results"></div>
+  </div>
+  
+</div>
+
+<div class="content">
+  <div class="content-wrapper">
+    <div class="header-content">
+      <h1 class="title-page">URL 和路由</h1>
+      
+        <div class="subtitle-page">如何使用 FlowRouter 通过 URL 来驱动你的 Meteor 应用的 UI。</div>
+      
+
+      <div class="page-actions">
+        <div class="actions-group">
+          <a class="btn primary small round lowercase" href="https://github.com/ourmeteor/guide-zh/tree/master/content/routing.md" target="_blank"><span class="icon-github"></span> <span>Edit on GitHub</span></a>
+          
+            <a class="btn tertiary small round lowercase" href="https://forums.meteor.com/t/19663"><span class="icon-comment"></span> <span>Discuss</span></a>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="document-formatting">
+      <p>读完本章，你将学到：</p>
+<ol>
+<li>URL 在客户端渲染应用中扮演着怎样的角色，以及与在传统的服务端渲染应用中相比，到底有何不同。</li>
+<li>如何使用 Flow Router 在应用的客户端和服务端定义路由。 </li>
+<li>如何使你的应用根据 URL 的变化来展示不同的内容。</li>
+<li>如何构建指向某个路由的链接，以及如何通过程序控制来跳转到某个路由。</li>
+</ol>
+<h2 id="client-side">客户端路由</h2>
+
+<p>在网页应用中，<em>路由</em> 是指通过 URL 来驱动用户界面（UI）的过程。URL 是每个浏览器都具有的重要特性，并且在用户看来，它具有几个重要的作用：</p>
+<ol>
+<li><strong>书签</strong> - 用户可以将 URL 收藏在浏览器中以保存那些他们需要回顾的内容。</li>
+<li><strong>分享</strong> - 用户可以通过发送某个页面链接的方式来和他人分享内容。</li>
+<li><strong>导航</strong> - URL 被用于驱动浏览器的前进和后退功能</li>
+</ol>
+<p>在传统的网页应用架构中，服务器一次性渲染一整个 HTML 页面，这时，URL 是用户访问这个应用的基本入口。每当用户在应用中点击一个 URL 链接，浏览器就会向服务器发送一个 HTTP 请求，而服务器则会通过服务端路由器做出正确的响应（向用户返回请求的页面），于是，用户便可以通过这种方式在应用中到处跳转。</p>
+<p>相较之下，Meteor 则是以<em>在连接上传递数据</em>的方式运作。在这种方式之下，服务器并不关心 URL 和 HTML 页面。客户端应用通过 DDP 协议与服务器进行沟通。举一个典型的例子，在应用加载时，它会初始化一系列 <em>subscriptions</em>，并通过它们获取渲染应用所需要的数据。当用户和应用进行交互时，可能会加载不同的 subscriptions，但从技术上来说，这个过程并不需要 URL 的参与 - 构建一个 URL 完全不会改变的 Meteor 应用并非难事。</p>
+<p>然而，即使是面对 Meteor 应用，用户依然十分关注上述那些 URL 特色功能。由于服务器不再由 URL 驱动，URL 成为了用户的客户端浏览状态的重要表现形式。与传统的服务端渲染应用不同的是，URL 不再需要描述完整的当前用户状态；它只需要包含那部分你希望可以链接过去的状态即可。例如，URL 可以包含页面的搜索筛选关键字，但是却没必要包含一个下拉菜单或弹窗的状态。</p>
+<h2 id="flow-router">使用 Flow Router</h2>
+
+<p>安装 <a href="https://atmospherejs.com/kadira/flow-router" target="_blank" rel="external"><code>kadira:flow-router</code></a> 包，即可向应用增加路由功能：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">meteor <span class="built_in">add</span> kadir<span class="variable">a:flow</span>-router</span><br></pre></td></tr></table></figure>
+<p>Flow Router 是由社区提供的 Meteor 路由包。编写这篇文章时，它的最新版本是2.X。想了解更多关于 Flow Router 的特性和功能，请参考  <a href="https://kadira.io/academy/meteor-routing-guide" target="_blank" rel="external">Kadira Meteor routing guide</a>。</p>
+<h2 id="defining-routes">定义一个简单的路由</h2>
+
+<p>路由器的基本作用是匹配特定的 URL 并执行相应的动作，这些都发生在客户端，包括用户的浏览器内或移动应用容器中。以 Todos 示例应用中的一段代码为例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FlowRouter.route(<span class="string">'/lists/:_id'</span>, &#123;</span><br><span class="line">  name: <span class="string">'Lists.show'</span>,</span><br><span class="line">  action(params, queryParams) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Looking at a list?"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这个路由动作会在两种情况下执行：页面最初就从与预设模式匹配的 URL 进行加载，或在页面打开时，URL 发生改变并与预设模式相匹配。需要注意的是，URL 可以在不向服务器发送任何其他请求的情况下发生改变，这与服务端渲染应用不同。</p>
+<p>当路由匹配时，<code>action</code> 方法会被执行，此时，你可以执行任何你需要的动作。路由的 <code>name</code> 属性是可选的，但它可以让我们在以后更容易地使用这个路由。</p>
+<h3 id="url-pattern-matching">URL 模式匹配</h3>
+
+<p>思考一下这段上述示例中使用到的 URL 模式：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'/lists/:_id'</span></span><br></pre></td></tr></table></figure>
+<p>这个模式会匹配特定的 URL。你可能已经注意到，这个 URL 中有一部分以 <code>:</code> 作为开头 - 这表示这个部分是一个 <em>url 参数</em>，并且会匹配一个出现在路径的相同部分的任意字符串。Flow Router 会将 URL 中的这个部分保存到当前路由的 <code>params</code> 属性中。</p>
+<p>除此之外，URL 可以包含一个 HTTP <a href="https://en.wikipedia.org/wiki/Query_string" target="_blank" rel="external"><em>查询字符串</em></a> （跟在可选的 <code>?</code> 之后的部分）。如果是这样，Flow Router 会将它们拆分到一个叫做 <code>queryParams</code> 的命名参数中。</p>
+<p>这里展示了一些示例 URL 以及与它们对应的 <code>params</code> 与 <code>queryParams</code>：</p>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>是否匹配？</th>
+<th>params</th>
+<th>queryParams</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/</td>
+<td>no</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>/about</td>
+<td>no</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>/lists/</td>
+<td>no</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>/lists/eMtGij5AFESbTKfkT</td>
+<td>yes</td>
+<td>{ _id: “eMtGij5AFESbTKfkT”}</td>
+<td>{ }</td>
+</tr>
+<tr>
+<td>/lists/1</td>
+<td>yes</td>
+<td>{ _id: “1”}</td>
+<td>{ }</td>
+</tr>
+<tr>
+<td>/lists/1?todoSort=top</td>
+<td>yes</td>
+<td>{ _id: “1”}</td>
+<td>{ todoSort: “top” }</td>
+</tr>
+</tbody>
+</table>
+<p>请注意，<code>params</code> 和 <code>queryParams</code> 中的所有值都是字符串，因为 URL 无法编码数据类型。例如，如果你想用一个参数来表示一个数字，你可能需要在使用前通过 <code>parseInt(value, 10)</code> 将它转换为数字。</p>
+<h2 id="accessing-route-info">获取路由信息</h2>
+
+<p>Flow Router 可以将 URL 中的参数作为函数参数传递给路由中的 <code>action</code> 函数，除此之外，它还在全局单例 <code>FlowRouter</code> 中以函数（或响应式函数）的形式提供了各种有用的信息。当用户在应用中到处跳转时，这些函数的返回值也会随之改变（或在一些情况下响应式地改变）。</p>
+<p>如同应用中的其他全局单例一样（参考<a href="data-loading.html#stores">「数据加载」章节</a>以了解 stores），你最好限制对 <code>FlowRouter</code> 的使用。这样，你的应用的各部分才能保持模块化与独立。对于 <code>FlowRouter</code> 来说，你最好只在应用的组件体系的最顶层使用它，包括「页面」组件或包裹它的布局组件。你可以参考  <a href="ui-ux.html#components">UI article</a> 以了解更多关于获取数据的知识。</p>
+<h3 id="current-route">当前路由</h3>
+
+<p>在你的代码中，当前路由的相关信息常常十分有用。这里列举了一些你可以使用的响应式函数：</p>
+<ul>
+<li><code>FlowRouter.getRouteName()</code> 获取路由名字</li>
+<li><code>FlowRouter.getParam(paramName)</code> 返回一个 URL 参数的值</li>
+<li><code>FlowRouter.getQueryParam(paramName)</code> 返回一个 URL 查询字符串的值</li>
+</ul>
+<p>我们曾以 Todos 应用中的列表页作为示例，其中，我们通过 <code>FlowRouter.getParam(&#39;_id&#39;)</code> 来获取当前列表的 id （在后面，我们将看到更多信息）。</p>
+<h3 id="active-route">突显激活的路由</h3>
+
+<p>当你希望在组件体系里嵌套较深的组件中通过导航组件来渲染链接时，你可能的确需要使用到全局的 <code>FlowRouter</code> 单例来获取当前路由的相关信息。通常，「激活的」路由需要被以某种方式突显出来（以表示网站的这个路由或区域是用户当前正在浏览的地方）。</p>
+<p><a href="https://atmospherejs.com/zimme/active-route" target="_blank" rel="external"><code>zimme:active-route</code></a> 包能帮助你方便地做到这件事：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">meteor add zimme:active-route</span><br></pre></td></tr></table></figure>
+<p>在 Todos 示例应用中，我们在 <code>App_body</code> 模板中为用户知道的每一个列表设置一个链接：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;#each list in lists&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"list-todo &#123;&#123;activeListClass list&#125;&#125;"</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    &#123;&#123;list.name&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">&#123;&#123;/each&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>对于每一个列表，我们可以通过 <code>activeListClass</code> helper 来确定用户是否正在浏览它。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Template.App_body.helpers(&#123;</span><br><span class="line">  activeListClass(list) &#123;</span><br><span class="line">    <span class="keyword">const</span> active = ActiveRoute.name(<span class="string">'Lists.show'</span>)</span><br><span class="line">      &amp;&amp; FlowRouter.getParam(<span class="string">'_id'</span>) === list._id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> active &amp;&amp; <span class="string">'active'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="rendering-routes">根据路由进行渲染</h2>
+
+<p>现在，我们知道了如何定义路由以及获取当前路由的相关信息。当用户访问一个路由时，我们已经准备好了去做该做的事——在屏幕上渲染用户界面。</p>
+<p><em>在这一节中，我们会讨论如何使用 Blaze 作为 UI 引擎来渲染路由。如果你使用 React 或 Angular 来构建应用，你将学到相似的概念，但实现代码差别很大。</em></p>
+<p>使用 Flow Router 时，在页面上根据不同 URL 展示不同视图的最简单方法，是使用作为补充的 Blaze Layout 包。首先，你需要安装 Blaze Layout 包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">meteor add kadira:blaze-layout</span><br></pre></td></tr></table></figure>
+<p>为了使用这个包，我们需要定义一个「布局」组件。在 Todos 示例应用中，这个组件叫做 <code>App_body</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"App_body"</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  &#123;&#123;&gt; Template.dynamic template=main&#125;&#125;</span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>（这里展示的不是完整的 <code>App_body</code> 组件，我们仅突出了其中最重要的部分）。<br>这里，我们使用了一个被称作 <code>Template.dynamic</code> 的 Blaze 功能来渲染数据环境中的 <code>main</code> 属性所指的模板。使用 Blaze Layout，我们可以在一个路由被访问时改变 <code>main</code> 属性。</p>
+<p>我们在 <code>Lists.show</code> 路由定义的 <code>action</code> 函数中做这些事：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FlowRouter.route(<span class="string">'/lists/:_id'</span>, &#123;</span><br><span class="line">  name: <span class="string">'Lists.show'</span>,</span><br><span class="line">  action() &#123;</span><br><span class="line">    BlazeLayout.render(<span class="string">'App_body'</span>, &#123;main: <span class="string">'Lists_show_page'</span>&#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这段代码表示，当用户访问一个形如 <code>/lists/x</code> 的 URL 时，<code>Lists.show</code> 路由将会使用 <code>BlazeLayout</code><br>来设置 <code>App_body</code> 组件的 <code>main</code> 属性。</p>
+<h2 id="page-templates">组件即页面</h2>
+
+<p>请注意，我们将被渲染的组件称作 <code>Lists_show_page</code> （而不是 <code>Lists_show</code>）。这表示，这个模板会直接被一个 Flow Router 动作渲染，并且会成为这个 URL 渲染体系中的「最顶层」。</p>
+<p><code>Lists_show_page</code> 模板<em>无需</em>参数即可渲染——模板本身需要负责从当前路由获取信息，并将其传递给自己的子模板。<br>由于 <code>Lists_show_page</code> 模板同渲染它的路由绑定得十分紧密，它必然是一个智能组件。如需了解更多关于智能组件和可复用组件，请参考<a href="ui-ux.html">「UI/UX」章节</a> 。</p>
+<p>像 <code>Lists_show_page</code> 这样的智能「页面」组件通常需要负责：</p>
+<ol>
+<li>收集路由信息，</li>
+<li>订阅相关 subscriptions，</li>
+<li>从 subscriptions 获取数据，并且</li>
+<li>将数据传递给子组件。</li>
+</ol>
+<p>在这种情况下，<code>Lists_show_page</code> 的大部分逻辑都写在了 JavaScript 代码中，而它的 HTML 模板则显得十分简洁：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"Lists_show_page"</span>&gt;</span></span><br><span class="line">  &#123;&#123;#each listId in listIdArray&#125;&#125;</span><br><span class="line">    &#123;&#123;&gt; Lists_show (listArgs listId)&#125;&#125;</span><br><span class="line">  &#123;&#123;else&#125;&#125;</span><br><span class="line">    &#123;&#123;&gt; App_notFound&#125;&#125;</span><br><span class="line">  &#123;&#123;/each&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>（<code>{{#each listId in listIdArray}}}</code> 是一种动画技巧，请参考<a href="ui-ux.html#animating-page-changes">「页面过渡」章节</a>）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Template.Lists_show_page.helpers(&#123;</span><br><span class="line">  <span class="comment">// 我们在只有一项的数组中使用 #each，因此，当lists发生改变时，「list」模板会被删除，</span></span><br><span class="line">  <span class="comment">// 而一个新的副本将被添加，这对于我们需要的动画来说非常重要。</span></span><br><span class="line">  listIdArray() &#123;</span><br><span class="line">    <span class="keyword">const</span> instance = Template.instance();</span><br><span class="line">    <span class="keyword">const</span> listId = instance.getListId();</span><br><span class="line">    <span class="keyword">return</span> Lists.findOne(listId) ? [listId] : [];</span><br><span class="line">  &#125;,</span><br><span class="line">  listArgs(listId) &#123;</span><br><span class="line">    <span class="keyword">const</span> instance = Template.instance();</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      todosReady: instance.subscriptionsReady(),</span><br><span class="line">      <span class="comment">// 为了对数据响应进行控制，我们将「list」（它包含了整个 list 以及所有的字段）作为一个函数</span></span><br><span class="line">      <span class="comment">// 进行传递。当你勾选一个 todo 项时，`list.incompleteCount` 将会改变。如果我们不这样做，</span></span><br><span class="line">      <span class="comment">// 无论你勾选了哪一项，整个 list 都会重新渲染。通过将 list 的数据响应隔离在关注它的区域，</span></span><br><span class="line">      <span class="comment">// 我们可以阻止这样的事发生。</span></span><br><span class="line">      list() &#123;</span><br><span class="line">        <span class="keyword">return</span> Lists.findOne(listId);</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// 由于在查询 list 时只设置了 `_id` 字段，我们没有建立对 `list.incompleteCount` 的依赖，</span></span><br><span class="line">      <span class="comment">// 因此避免了在它发生改变时重新渲染整个 todos</span></span><br><span class="line">      todos: Lists.findOne(listId, &#123;fields: &#123;_id: <span class="literal">true</span>&#125;&#125;).todos()</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><code>listShow</code> 组件（一个可复用组件）承担了渲染页面内容的实际工作。由于页面组件会将数据作为参数传递给可复用组件，它便可以相当无脑地进行工作，并且，同路由器进行沟通以及渲染页面的这两个关注点也得以分离。</p>
+<h3 id="route-rendering-logic">在用户退出登录时更新页面</h3>
+
+<p>这里有一些渲染逻辑不仅和路由相关，还和用户界面的渲染相关。一个典型的例子就是授权；例如，对于部分页面，如果用户没有登录，你可能希望展示一个登录表单。</p>
+<p>最好始终以「应该在组件体系（即渲染后的组件组成的树结构）中渲染什么」的方式来进行思考。因此，授权应该在一个组件中进行。假如我们希望在之前提到的 <code>Lists_show_page</code> 中添加这个功能。一开始我们可能会这样做：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"Lists_show_page"</span>&gt;</span></span><br><span class="line">  &#123;&#123;#if currentUser&#125;&#125;</span><br><span class="line">    &#123;&#123;#each listId in listIdArray&#125;&#125;</span><br><span class="line">      &#123;&#123;&gt; Lists_show (listArgs listId)&#125;&#125;</span><br><span class="line">    &#123;&#123;else&#125;&#125;</span><br><span class="line">      &#123;&#123;&gt; App_notFound&#125;&#125;</span><br><span class="line">    &#123;&#123;/each&#125;&#125;</span><br><span class="line">  &#123;&#123;else&#125;&#125;</span><br><span class="line">    Please log in to edit posts.</span><br><span class="line">  &#123;&#123;/if&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当然，我们可能会发现我们需要在许多需要访问控制的页面共享这项功能。我们可以创造一个具有我们所需要的行为的「布局」组件，并将其他模板包裹在其中。这样，我们便可以很容易地共享功能。</p>
+<p>你可以使用 Blaze 的「模板块 helper」来创造包裹组件（参考<a href="blaze.html#block-helpers">「Blaze」章节</a>）。这里演示了如何编写一个授权模板：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"App_forceLoggedIn"</span>&gt;</span></span><br><span class="line">  &#123;&#123;#if currentUser&#125;&#125;</span><br><span class="line">    &#123;&#123;&gt; Template.contentBlock&#125;&#125;</span><br><span class="line">  &#123;&#123;else&#125;&#125;</span><br><span class="line">    Please log in see this page.</span><br><span class="line">  &#123;&#123;/if&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当添加这个模板之后，我们便可以简单地包裹我们的 <code>Lists_show_page</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"Lists_show_page"</span>&gt;</span></span><br><span class="line">  &#123;&#123;#App_forceLoggedIn&#125;&#125;</span><br><span class="line">    &#123;&#123;#each listId in listIdArray&#125;&#125;</span><br><span class="line">      &#123;&#123;&gt; Lists_show (listArgs listId)&#125;&#125;</span><br><span class="line">    &#123;&#123;else&#125;&#125;</span><br><span class="line">      &#123;&#123;&gt; App_notFound&#125;&#125;</span><br><span class="line">    &#123;&#123;/each&#125;&#125;</span><br><span class="line">  &#123;&#123;/App_forceLoggedIn&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用这种方法的最大好处是，当查看 <code>Lists_show_page</code> 的代码时，你将很直观清晰地了解到，如果一个用户访问这个页面将会发生什么。</p>
+<p>通过将一个模板包裹在多个包裹组件中，或创建一个组合了多个包裹模板的元包裹组件，你可以将多个这种类型的行为或功能组合起来。</p>
+<h2 id="changing-routes">改变路由</h2>
+
+<p>如果你不能用一种方式跳转到一个新的路由，那么根据新路由来更新 UI 这件事又从何说起呢？想要跳转路由，最简单的方式是提供一个可靠的 <code>&lt;a&gt;</code> 标签和一个 URL。虽然，你可以使用 <code>FlowRouter.path</code> 来生成 URL，但更方便的方法是使用 <a href="https://github.com/arillo/meteor-flow-router-helpers/" target="_blank" rel="external"><code>arillo:flow-router-helpers</code></a> 包。它定义了一些有用的 helpers：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">meteor</span> <span class="keyword">add </span>arillo:flow-router-helpers</span><br></pre></td></tr></table></figure>
+<p>当你安装好了这个包，你就可以在你的模板中使用这些 helpers 来展示跳转到特定路由的链接。例如，在 Todos 示例应用中，我们的导航链接定义如下： </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;&#123;pathFor 'Lists.show' _id=list._id&#125;&#125;"</span> <span class="attr">title</span>=<span class="string">"&#123;&#123;list.name&#125;&#125;"</span></span><br><span class="line">    <span class="attr">class</span>=<span class="string">"list-todo &#123;&#123;activeListClass list&#125;&#125;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="routing-programmatically">使用程序来控制路由</h3>
+
+<p>在某些时候，你可能想通过除了点击一个链接以外的其他某种用户行为来进行路由跳转。比如说，在示例应用中，在用户创建了一个新的列表时，我们希望将用户跳转到刚刚创建的列表处。为了做到这一点，我们在获得新列表的 id 时，调用了 <code>FlowRouter.go()</code> 函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; insert &#125; <span class="keyword">from</span> <span class="string">'../../api/lists/methods.js'</span>;</span><br><span class="line"></span><br><span class="line">Template.App_body.events(&#123;</span><br><span class="line">  <span class="string">'click .js-new-list'</span>() &#123;</span><br><span class="line">    <span class="keyword">const</span> listId = insert.call();</span><br><span class="line">    FlowRouter.go(<span class="string">'Lists.show'</span>, &#123; _id: listId &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>通过使用 <code>FlowRouter.setParams()</code> 和 <code>FlowRouter.setQueryParams()</code>，你也可以只改变当前路由的某个部分。比如，当我们正在浏览某个列表时，如果我们想跳转到另一个列表，可以这样写代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FlowRouter.setParams(&#123;_id: newList._id&#125;);</span><br></pre></td></tr></table></figure>
+<p>当然，无论哪种情况，调用 <code>FlowRouter.go()</code> 总是有效的，因此，除非你是在尝试为某种特定的用例进行优化，否则，最好使用 <code>FlowRouter.go()</code>。 </p>
+<h3 id="storing-data-in-the-url">在 URL 中保存数据</h3>
+
+<p>正如我们在介绍中讨论的一样，URL 不过是当前页面的一部分客户端状态的序列化结果。虽然，URL 只能是字符串，但是任何种类的数据实际上都可以被序列化为字符串。</p>
+<p>一般来说，如果你想将任意可序列化的数据保存在 URL 参数中，你可以使用 <a href="http://docs.meteor.com/#/full/ejson_stringify" target="_blank" rel="external"><code>EJSON.stringify()</code></a> 来将这些数据转变为字符串。你还需要使用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent" target="_blank" rel="external"><code>encodeURIComponent</code></a> 对这个字符串进行 URL 编码以移除任何在 URL 有特殊含义的符号：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FlowRouter.setQueryParams(&#123;data: <span class="built_in">encodeURIComponent</span>(EJSON.stringify(data))&#125;);</span><br></pre></td></tr></table></figure>
+<p>你可以通过使用 <a href="http://docs.meteor.com/#/full/ejson_parse" target="_blank" rel="external"><code>EJSON.parse()</code></a> 来从 Flow Router 中重新获取这些数据。请注意，Flow Router 已经自动为你对字符串进行了 URL 反编码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> data = EJSON.parse(FlowRouter.getQueryParam(<span class="string">'data'</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="redirecting">重定向</h2>
+
+<p>有时候，用户会跳转到它们不该访问的地方。有可能是他们正在查看的数据已经移动，也可能是他们正处在管理控制台页面但是却退出了登录，还可能是他们创建了一个新东西，而你想让他们跳转到展示这个东西的页面。</p>
+<p>通常，我们可以根据用户行为进行重定向，只需要调用 <code>FlowRouter.go()</code>函数，或如同上文创建列表的例子中那样，调用其他相关函数即可。但有时，用户会直接访问到一个不存在的 URL，这时，我们需要知道如何直接进行重定向。</p>
+<p>如果一个 URL 已经过时（有时你可能改变应用的 URL 定义），你可以在这个路由的 <code>action</code> 函数中进行重定向：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FlowRouter.route(<span class="string">'/old-list-route/:_id'</span>, &#123;</span><br><span class="line">  action(params) &#123;</span><br><span class="line">    FlowRouter.go(<span class="string">'Lists.show'</span>, params);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>译者注：使用 <code>FlowRouter.go()</code> 进行重定向可能不是一个好方法，例如，如果你使用这种方式进行重定向，那么当用户将无法进行页面回退（思考一下为什么）。建议通过<a href="https://github.com/kadirahq/flow-router#redirecting-with-triggers" target="_blank" rel="external">在 trigger 中使用 redirect 函数</a>的方式进行重定向。</p>
+</blockquote>
+<h3 id="redirecting-dynamically">动态重定向</h3>
+
+<p>上述方法仅适用于静态重定向。有时候，你需要加载更多数据才知道应该重定向到什么地方。这是，你需要渲染一些组件来订阅你需要的数据。例如，在 Todos 示例应用中，我们希望将根路由 (<code>/</code>) 重定向到能够被查询到的第一个列表。为了做到这一点，我们需要渲染一个特殊的 <code>App_rootRedirector</code> 组件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FlowRouter.route(<span class="string">'/'</span>, &#123;</span><br><span class="line">  name: <span class="string">'App.home'</span>,</span><br><span class="line">  action() &#123;</span><br><span class="line">    BlazeLayout.render(<span class="string">'App_body'</span>, &#123;main: <span class="string">'App_rootRedirector'</span>&#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><code>App_rootRedirector</code> 被渲染在 <code>App_body</code> 布局中，而这个布局组件则会在渲染子组件<em>之前</em>订阅用户可以查询到的所有列表，因此，当 <code>App_rootRedirector</code> 创建时，我们可以确定这里至少有一个列表会被加载，所以我们可以这样做：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Template.App_rootRedirector.onCreated(() =&gt; &#123;</span><br><span class="line">  <span class="comment">// 我们需要设置 timeout 函数，因为我们不能在一个重定向中进再进行重定向</span></span><br><span class="line">  <span class="comment">// 这是当前版本的 Flow Router 的一个限制</span></span><br><span class="line">  Meteor.setTimeout(() =&gt; &#123;</span><br><span class="line">    FlowRouter.go(<span class="string">'Lists.show'</span>, Lists.findOne());</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>如果你希望使用某些数据，而这些数据在组件创建时还没有被订阅，你可以使用 <code>autorun</code> 和 <code>subscriptionsReady()</code> 来等待订阅完成：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Template.App_rootRedirector.onCreated(() =&gt; &#123;</span><br><span class="line">  <span class="comment">// 在这里进行订阅</span></span><br><span class="line">  <span class="keyword">this</span>.subscribe(<span class="string">'lists.public'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 现在我们需要等待上述订阅。在等待期间，我们也需要模板展示一些加载状态。</span></span><br><span class="line">  <span class="keyword">this</span>.autorun(() =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.subscriptionsReady()) &#123;</span><br><span class="line">      FlowRouter.go(<span class="string">'Lists.show'</span>, Lists.findOne());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="redirecting-after-user-action">在用户行为之后进行重定向</h3>
+
+<p>通常，你希望在用户完成某个动作之后，立刻通过程序控制跳转到一个新的路由。在上述创建列表的示例中，我们对它进行了<em>优化</em>——即在获得服务端关于 method 的成功响应之前就执行重定向。我们之所以能这样做，是因为我们有理由相信在绝大部分情况下，这个 method 会执行成功（参考<a href="ui-ux.html#optimistic-ui">「UI/UX」章节</a>以了解更加深入的讨论）。</p>
+<p>然而，如果我们希望等待服务端对 method 的返回结果，我们可以将重定向放在 method 的回调函数中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Template.App_body.events(&#123;</span><br><span class="line">  <span class="string">'click .js-new-list'</span>() &#123;</span><br><span class="line">    lists.insert.call((err, listId) =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (!err) &#123;</span><br><span class="line">        FlowRouter.go(<span class="string">'Lists.show'</span>, &#123; _id: listId &#125;);  </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>你还需要展示某种指示以表明按钮已经被点击，method 正在工作，而重定向尚未完成。不要忘了，如果 method 返回了一个错误，你还需要向用户提供某种反馈。</p>
+<h2 id="advanced">高级路由</h2>
+
+<h3 id="404s">找不到页面</h3>
+
+<p>通常，如果用户输入了错误的 URL，你希望向他们展示某种缓和的 404 页面。这里有两种类型的 404 页面。第一种是，用户输入的 URL 无法匹配任何路由定义。你可以使用 <code>FlowRouter.notFound</code> 来处理这种情况：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// the App_notFound template is used for unknown routes and missing lists</span></span><br><span class="line">FlowRouter.notFound = &#123;</span><br><span class="line">  action() &#123;</span><br><span class="line">    BlazeLayout.render(<span class="string">'App_body'</span>, &#123;main: <span class="string">'App_notFound'</span>&#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>第二种情况是，用户输入的 URL 是有效的，但却无法匹配任何数据。在这种情况下，URL 匹配于一个路由，但当这个路由完成数据订阅时，它发现并没有任何数据。这种情况下，最好让页面组件（负责订阅和查询数据）去渲染一个「未找到数据」的模板，而不是使用一个通用的页面模板：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"Lists_show_page"</span>&gt;</span></span><br><span class="line">  &#123;&#123;#each listId in listIdArray&#125;&#125;</span><br><span class="line">    &#123;&#123;&gt; Lists_show (listArgs listId)&#125;&#125;</span><br><span class="line">  &#123;&#123;else&#125;&#125;</span><br><span class="line">    &#123;&#123;&gt; App_notFound&#125;&#125;</span><br><span class="line">  &#123;&#123;/each&#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="analytics">数据分析</h3>
+
+<p>通常，我们都想知道应用的哪些页面最常被访问，以及用户都是来自哪里。你可以在<a href="deployment.html#analytics">「部署」章节</a>查看到如何设置基于 Flow Router 的数据统计。</p>
+<h3 id="server-side">服务端路由</h3>
+
+<p>正如我们之前所讨论的那样，Meteor 是一个客户端渲染应用框架，但服务端渲染的需求仍然存在。这里有两种服务端路由的主要场景。</p>
+<h4 id="server-side-apis">用于 API 访问的服务端路由</h4>
+
+<p>Meteor 允许你<a href="http://docs.meteor.com/#/full/webapp" target="_blank" rel="external">编写底层的连接处理函数</a>来创建任意类型的服务端 API。如果你仅仅是希望为你的 methods 和 publications 创建 RESTful 版本，你可以使用 <a href="http://atmospherejs.com/simple/rest" target="_blank" rel="external"><code>simple:rest</code></a> 包来轻松实现。参考<a href="data-loading.html#publications-as-rest">「数据加载」章节</a>和 <a href="methods.html">「Methods」章节</a> 以了解更多信息。 </p>
+<p>如果你希望进行更多控制，你可以使用更复杂的 <a href="https://atmospherejs.com/nimble/restivus" target="_blank" rel="external"><code>nimble:restivus</code></a> 包来以任何你需要的方式创建任意数量的接口。</p>
+<h4 id="server-side-rendering">服务端渲染</h4>
+
+<p>Blaze UI 库不支持服务端渲染，因此，如果你使用 Blaze，你不能在服务端渲染页面。然而，React UI 支持服务端渲染。这意味着，如果你使用 React 框架，你可以在服务端渲染 HTML 页面。</p>
+<p>虽然，Flow Router可以多多少少像我们关于 Blaze 描述的那样渲染 React 组件，但截止这篇文章编写时，它对 SSR（服务端渲染）的支持<a href="https://kadira.io/blog/meteor/meteor-ssr-support-using-flow-router-and-react" target="_blank" rel="external">仍处于实验阶段</a>。然而，如果你想要在 Meteor 使用 SSR，这恐怕是目前最好的方法了。</p>
+
+    </div>
+  </div>
+
+  <div class="pagination">
+    <div class="content-wrapper">
+      
+      
+        <a class="link primary prev"
+          href="react.html">
+          <span class="icon-arrow-left-alt"></span>
+          <span class="subtitle-pagination">Previous</span>
+          React
+        </a>
+      
+      
+        <a class="link primary next"
+          href="security.html">
+          <span class="subtitle-pagination">Next</span>
+          Security
+          <span class="icon-arrow-right-alt"></span>
+        </a>
+      
+    </div>
+  </div>
+
+  <div class="github">
+    <a class="link tertiary " href="https://github.com/ourmeteor/guide-zh/tree/master/content/routing.md" target="_blank">
+      <span class="icon-github"></span>Edit on GitHub</a>
+  </div>
+
+  
+    <div class="discourse-comments-wrapper content-wrapper">
+      <div id='discourse-comments'></div>
+    </div>
+
+    <script type="text/javascript">
+      DiscourseEmbed = { discourseUrl: 'http://forums.meteor.com/',
+                         topicId: 19663 };
+
+      (function() {
+        var d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+        d.src = DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+      })();
+    </script>
+  
+</div>
+
+    <script src="/script/smooth-scroll.min.js"></script>
+    <script src="/script/main.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/fastclick/1.0.6/fastclick.min.js"></script>
+
+    <script>
+      // nectar ninja
+      (function(){
+        var handle = '@meteorjs';
+        var a = document.createElement('script');
+        var m = document.getElementsByTagName('script')[0];
+        a.async = 1;
+        a.src = 'https://nectar.ninja/api/v1/' + handle.slice(1);
+        m.parentNode.insertBefore(a, m);
+      })();
+
+     
+      
+        // Segment Tracking
+        !function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.1.0";
+        analytics.load("zQx6cQifkTU79E3L0XAnmrOXP2A5bC6r");
+        analytics.page()
+        }}();
+      
+
+      // search box
+      
+
+        ['desktop', 'mobile'].forEach(function(type) {
+          var search = docsearch({
+            apiKey: 'b123b42bb515f300dc09dc88f7695ec1',
+            indexName: 'meteor_guide',
+            inputSelector: '#' + type + '-search-input',
+            autocompleteOptions: {
+              dropdownMenuContainer: '.wrapper-' + type + '-search-results',
+              debug: true
+            }
+          }).autocomplete;
+
+          var sidebar = document.querySelector('.sidebar-content');
+          search.on('autocomplete:opened', function() {
+            sidebar.classList.add('searching');
+          });
+          search.on('autocomplete:closed', function() {
+            sidebar.classList.remove('searching');
+          });
+          search.on('autocomplete:updated', function() {
+            if (search.val() === '') {
+              search.autocomplete.close();
+            }
+          });
+        });
+      
+
+      
+        var REDIRECTS = {
+  "/using-packages.html": "atmosphere-vs-npm.html",
+  "/using-packages.html#npm": "using-npm-packages.html",
+  "/using-packages.html#client-npm": "using-npm-packages.html#client-npm",
+  "/using-packages.html#installing-npm": "using-npm-packages.html#installing-npm",
+  "/using-packages.html#using-npm": "using-npm-packages.html#using-npm",
+  "/using-packages.html#npm-styles": "using-npm-packages.html#npm-styles",
+  "/using-packages.html#npm-shrinkwrap": "using-npm-packages.html#npm-shrinkwrap",
+  "/using-packages.html#atmosphere": "using-atmosphere-packages.html",
+  "/using-packages.html#atmosphere-searching": "using-atmosphere-packages.html#atmosphere-searching",
+  "/using-packages.html#atmosphere-naming": "using-atmosphere-packages.html#atmosphere-naming",
+  "/using-packages.html#installing-atmosphere": "using-atmosphere-packages.html#installing-atmosphere",
+  "/using-packages.html#using-atmosphere": "using-atmosphere-packages.html#using-atmosphere",
+  "/using-packages.html#importing-atmosphere-styles": "using-atmosphere-packages.html#importing-atmosphere-styles",
+  "/using-packages.html#peer-npm-dependencies": "using-atmosphere-packages.html#peer-npm-dependencies",
+  "/using-packages.html#package-namespacing": "using-atmosphere-packages.html#package-namespacing",
+  "/using-packages.html#async-callbacks": "using-npm-packages.html#async-callbacks",
+  "/using-packages.html#bind-environment": "using-npm-packages.html#bind-environment",
+  "/using-packages.html#wrap-async": "using-npm-packages.html#wrap-async",
+  "/using-packages.html#promises": "using-npm-packages.html#promises",
+  "/using-packages.html#overriding-packages": "writing-npm-packages.html#overriding-npm-packages",
+  "/using-packages.html#npm-overriding": "writing-npm-packages.html#overriding-npm-packages",
+  "/using-packages.html#atmosphere-overriding": "writing-atmosphere-packages.html#overriding-atmosphere-packages",
+  "/using-packages.html#npm-shrinkpack": "using-npm-packages.html#npm-shrinkpack",
+  "/writing-packages.html": "writing-atmosphere-packages.html",
+  "/writing-packages.html#npm-vs-atmosphere": "atmosphere-vs-npm.html",
+  "/writing-packages.html#creating-npm": "writing-npm-packages.html",
+  "/writing-packages.html#including-in-app": "writing-npm-packages.html#including-in-app",
+  "/writing-packages.html#publishing-npm": "writing--packages.html#publishing-npm",
+  "/writing-packages.html#creating": "writing-atmosphere-packages.html",
+  "/writing-packages.html#adding-files": "writing-atmosphere-packages.html#adding-files",
+  "/writing-packages.html#adding-javascript": "writing-atmosphere-packages.html#adding-javascript",
+  "/writing-packages.html#adding-css": "writing-atmosphere-packages.html#adding-css",
+  "/writing-packages.html#adding-style": "writing-atmosphere-packages.html#adding-style",
+  "/writing-packages.html#adding-assests": "writing-atmosphere-packages.html#adding-assets",
+  "/writing-packages.html#exporting": "writing-atmosphere-packages.html#exporting",
+  "/writing-packages.html#dependencies": "writing-atmosphere-packages.html#dependencies",
+  "/writing-packages.html#atmosphere-dependencies": "writing-atmosphere--packages.html#atmosphere-dependencies",
+  "/writing-packages.html#meteor-version-dependencies": "writing-atmosphere-packages.html#meteor-version-dependencies",
+  "/writing-packages.html#version-constraints": "writing-atmosphere-packages.html#version-constraints",
+  "/writing-packages.html#npm-dependencies": "writing-atmosphere-packages.html#npm-dependencies",
+  "/writing-packages.html#peer-npm-dependencies": "writing-atmosphere-packages.html#peer-npm-dependencies",
+  "/writing-packages.html#cordova-plugins": "writing-atmosphere-packages.html#cordova-plugins",
+  "/writing-packages.html#testing": "writing-atmosphere-packages.html#testing",
+  "/writing-packages.html#testing-with-peer-dependencies": "writing-atmosphere-packages.html#testing-with-peer-dependencies",
+  "/writing-packages.html#local-vs-published": "writing-atmosphere-packages.html#local-vs-published",
+  "/writing-packages.html#build-plugins": "build-tool.html#build-plugins",
+  "/writing-packages.html#types-of-build-plugins": "build-tool.html#types-of-build-plugins",
+  "/writing-packages.html#writing-build-plugins": "build-tool.html#writing-build-plugins",
+  "/writing-packages.html#caching-build-plugins": "build-tool.html#caching-build-plugins",
+  "/testing.html#simple-unit-test": "testing.html#simple-blaze-unit-test"
+};
+
+        function redirect() {
+          // Support redirects of the form /path#hash
+          var locationKey = location.pathname + location.hash;
+          if (REDIRECTS[locationKey]) {
+            location.replace(location.origin + '/' + REDIRECTS[locationKey]);
+          }
+
+          // Support redirects of the form #hash (works for any path)
+          var hashKey = location.hash;
+          if (REDIRECTS[hashKey]) {
+            location.replace(location.origin + '/' + REDIRECTS[hashKey]);
+          }
+        }
+
+        // Redirect now
+        redirect();
+
+        // Redirect on hash change
+        window.onhashchange = redirect;
+      
+    </script>
+  </body>
+</html>
